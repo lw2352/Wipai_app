@@ -14,6 +14,8 @@ using System.Timers;
 //[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 //
 
+
+    //5-20 注释掉自动上传流程代码，还原以前的设备选择和其他ui操作
 namespace Wipai_app
 {
 
@@ -31,6 +33,9 @@ namespace Wipai_app
         //public static log4net.ILog DebugLog = log4net.LogManager.GetLogger(typeof(Form1));
 
         private delegate void ShowMsgHandler(string msg);
+        private delegate void AddAddressHandler(string address);
+        private delegate void RemoveAddressHandler(string address);
+
         private void ShowMsg(string msg)
         {
             if (!receiveDatarichTextBox.InvokeRequired)
@@ -44,13 +49,38 @@ namespace Wipai_app
             }
 
         }
+        
+        private void AddAddress(string address)
+        {
+            if (!DeviceCheckedListBox1.InvokeRequired)
+            {
+                DeviceCheckedListBox1.Items.Add(address);
+            }
+            else
+            {
+                AddAddressHandler handler = new AddAddressHandler(ShowMsg);
+                BeginInvoke(handler, new object[] { address });
+            }
 
+        }
+        
+        private void RemoveAddress(string address)
+        {
+            if (!DeviceCheckedListBox1.InvokeRequired)
+            {
+                DeviceCheckedListBox1.Items.Remove(address);
+            }
+            else
+            {
+                RemoveAddressHandler handler = new RemoveAddressHandler(ShowMsg);
+                BeginInvoke(handler, new object[] { address });
+            }
 
+        }
 
         public Form1()
         {
             InitializeComponent();
-            //CheckForIllegalCrossThreadCalls = false; //允许跨线程访问
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -62,7 +92,7 @@ namespace Wipai_app
             BtnOpenServer.Enabled = true;
             BtnCloseServer.Enabled = false;
 
-            /*try
+            try
             {
                 //获取主机名
                 string HostName = Dns.GetHostName();
@@ -78,6 +108,7 @@ namespace Wipai_app
                         IPBox.Text = localIP;
                         Console.WriteLine("本地IP为"+localIP);
                         //DebugLog.Debug("本地IP为" + localIP);
+                        ShowMsg("本地IP为" + localIP);
                     }
                 }
             }
@@ -85,7 +116,7 @@ namespace Wipai_app
             {
                 Console.WriteLine(ex);
                 //DebugLog.Debug(ex);
-            }*/
+            }
 
         }
         //开启服务
@@ -156,13 +187,13 @@ namespace Wipai_app
                     dataitem.byteAllData = new byte[g_datafulllength];
                     dataitem.currentsendbulk = 0;
                     dataitem.uploadGroup = 0;
-                    dataitem.isChoosed = true;
+                    dataitem.isChoosed = false;
                     dataitem.CmdStage = 0;
                     dataitem.isSendDataToServer = false;
                     dataitem.SingleBuffer = new byte[perPackageLength];
                     dataitem.strAddress = strAddress;
                     htClient.Add(strAddress, dataitem);
-
+   
                     //Once the client connects then start receiving the commands from her
                     //开始从连接的socket异步接收数据
                     clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None,
@@ -195,7 +226,7 @@ namespace Wipai_app
 
                 DataItem dataitem = (DataItem)htClient[strAddress];//取出address对应的dataitem
                 //获取接收的数据长度,注意此处的停止接收，后面必须继续接收，否则不会接收数据的。
-                int bytesRead = clientSocket.EndReceive(ar);//接收到的数据长度
+                int bytesRead = clientSocket.EndReceive(ar);//接收到的数据长度 !!!如果设备掉线，此处会throw错误
                 if (bytesRead > 0 && radioBtnWindowShow.Checked == true)     //打印数据
                 {                  
                     string str = byteToHexStr(dataitem.SingleBuffer);
@@ -230,20 +261,28 @@ namespace Wipai_app
                                 dataitem.byteAllData = olddataitem.byteAllData;//继承旧属性
                                 dataitem.currentsendbulk = olddataitem.currentsendbulk;//继承旧属性
                                 dataitem.uploadGroup = 0;
-                                dataitem.isChoosed = true;
+                                dataitem.isChoosed = false;
                                 dataitem.CmdStage = olddataitem.CmdStage;//继承旧属性
                                 dataitem.isSendDataToServer = olddataitem.isSendDataToServer;//继承旧属性
                                 dataitem.SingleBuffer = new byte[perPackageLength];
                                 dataitem.strAddress = strAddress;
 
                                 htClient.Remove(oldAddress);//删除旧地址的键值对
+                                string OldAddress = oldAddress + "--" + dataitem.intDeviceID.ToString();
+                                RemoveAddress(OldAddress);
+
                                 htClient[strAddress] = dataitem;//把设备的IP和设备的dataitem对应地更新进哈希表
+                                string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
+                                AddAddress(newAddress);
                             }
                             else
                             {
                                 //若不存在，属于全新地址，更新ID号
                                 dataitem.intDeviceID = intdeviceID;
                                 dataitem.byteDeviceID = ID;
+
+                                string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
+                                AddAddress(newAddress);
                             }
                         }//if (dataitem.intDeviceID == 0)
                     }//end if (checkIsHeartPackage())   
@@ -277,19 +316,19 @@ namespace Wipai_app
                     }
 
                     //add 5-3
-                    if (checkIsAllCmdStage1())//采样完成
+                   /* if (checkIsAllCmdStage1())//采样完成
                     {
                         UploadADdataByGroup(currentUploadGroup);
                         //DebugLog.Debug("所有已选择设备都处于stage1--采样完成，准备上传");
                         string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "--所有已选择设备都处于stage1--采样完成，准备上传" + "\n";
                         Console.WriteLine(msg);
                         ShowMsg(msg);
-                    }
+                    }*/
 
-                    if (checkIsAllCmdStage3())//stored ok
+                    /*if (checkIsAllCmdStage3())//stored ok
                     {
                         htClient.Clear();
-                    }
+                    }*/
 
                     //处理AD数据（收到纯数据时保存到一个60万大小的数组中）
                     if (checkIsPureData(dataitem.SingleBuffer))
@@ -309,6 +348,10 @@ namespace Wipai_app
                             dataitem.isSendDataToServer = false;
                             dataitem.CmdStage = 3;
 
+                            string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--数据上传完毕" + "\n";
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
+
                             //StatusBox.Text = "数据采集完毕";
                             //progressBar1.Value = 0;
                             //DebugLog.Debug("设备ID为" + dataitem.intDeviceID + "数据采集完毕");
@@ -320,8 +363,8 @@ namespace Wipai_app
                     {
 
                         SendCmdSingle(SetADcmd(dataitem.currentsendbulk), dataitem.byteDeviceID, dataitem.socket);//发送下一包的命令    
-                        ShowMsg(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--第" + dataitem.currentsendbulk + "包");                                                                                                                            
-                        System.Diagnostics.Debug.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--第" + dataitem.currentsendbulk + "包");
+                        ShowMsg(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--第" + dataitem.currentsendbulk + "包" + "\n");                                                                                                                            
+                        System.Diagnostics.Debug.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--第" + dataitem.currentsendbulk + "包" + "\n");
 
                         //DebugLog.Debug("设备ID为" + dataitem.intDeviceID + "第" + dataitem.currentsendbulk + "包");
                         //StatusBox.Text = dataitem.currentsendbulk.ToString();
@@ -560,6 +603,7 @@ namespace Wipai_app
                 dataitem.isChoosed = false;//先复位选中状态
             }
             int ChoosedDeviceID;//当前已选择的设备
+            string ChoosedAddress;
             string IDString = "";
             for (int i = 0; i < DeviceCheckedListBox1.Items.Count; i++)
             {

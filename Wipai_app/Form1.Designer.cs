@@ -115,6 +115,7 @@
             this.StatusBox.Name = "StatusBox";
             this.StatusBox.Size = new System.Drawing.Size(128, 21);
             this.StatusBox.TabIndex = 6;
+            this.StatusBox.Text = "null";
             // 
             // label3
             // 
@@ -260,7 +261,6 @@
             this.IPBox.Name = "IPBox";
             this.IPBox.Size = new System.Drawing.Size(127, 21);
             this.IPBox.TabIndex = 5;
-            this.IPBox.Text = "120.25.229.254";
             // 
             // PortBox
             // 
