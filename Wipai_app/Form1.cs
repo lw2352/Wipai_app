@@ -33,8 +33,6 @@ namespace Wipai_app
         //public static log4net.ILog DebugLog = log4net.LogManager.GetLogger(typeof(Form1));
 
         private delegate void ShowMsgHandler(string msg);
-        private delegate void AddAddressHandler(string address);
-        private delegate void RemoveAddressHandler(string address);
 
         private void ShowMsg(string msg)
         {
@@ -50,37 +48,11 @@ namespace Wipai_app
 
         }
         
-        private void AddAddress(string address)
-        {
-            if (!DeviceCheckedListBox1.InvokeRequired)
-            {
-                DeviceCheckedListBox1.Items.Add(address);
-            }
-            else
-            {
-                AddAddressHandler handler = new AddAddressHandler(ShowMsg);
-                BeginInvoke(handler, new object[] { address });
-            }
-
-        }
-        
-        private void RemoveAddress(string address)
-        {
-            if (!DeviceCheckedListBox1.InvokeRequired)
-            {
-                DeviceCheckedListBox1.Items.Remove(address);
-            }
-            else
-            {
-                RemoveAddressHandler handler = new RemoveAddressHandler(ShowMsg);
-                BeginInvoke(handler, new object[] { address });
-            }
-
-        }
 
         public Form1()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false; //允许跨线程访问
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -108,7 +80,7 @@ namespace Wipai_app
                         IPBox.Text = localIP;
                         Console.WriteLine("本地IP为"+localIP);
                         //DebugLog.Debug("本地IP为" + localIP);
-                        ShowMsg("本地IP为" + localIP);
+                        ShowMsg("本地IP为" + localIP + "\n");
                     }
                 }
             }
@@ -269,11 +241,11 @@ namespace Wipai_app
 
                                 htClient.Remove(oldAddress);//删除旧地址的键值对
                                 string OldAddress = oldAddress + "--" + dataitem.intDeviceID.ToString();
-                                RemoveAddress(OldAddress);
+                                DeviceCheckedListBox1.Items.Remove(OldAddress);
 
                                 htClient[strAddress] = dataitem;//把设备的IP和设备的dataitem对应地更新进哈希表
                                 string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
-                                AddAddress(newAddress);
+                                DeviceCheckedListBox1.Items.Add(newAddress);
                             }
                             else
                             {
@@ -282,7 +254,7 @@ namespace Wipai_app
                                 dataitem.byteDeviceID = ID;
 
                                 string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
-                                AddAddress(newAddress);
+                                DeviceCheckedListBox1.Items.Add(newAddress);
                             }
                         }//if (dataitem.intDeviceID == 0)
                     }//end if (checkIsHeartPackage())   
@@ -602,18 +574,19 @@ namespace Wipai_app
                 DataItem dataitem = (DataItem)de.Value;
                 dataitem.isChoosed = false;//先复位选中状态
             }
-            int ChoosedDeviceID;//当前已选择的设备
+            //int ChoosedDeviceID;//当前已选择的设备
             string ChoosedAddress;
             string IDString = "";
             for (int i = 0; i < DeviceCheckedListBox1.Items.Count; i++)
             {
                 if (DeviceCheckedListBox1.GetItemChecked(i))
                 {
-                    ChoosedDeviceID = Convert.ToInt32(DeviceCheckedListBox1.GetItemText(DeviceCheckedListBox1.Items[i]));
+                    ChoosedAddress = DeviceCheckedListBox1.GetItemText(DeviceCheckedListBox1.Items[i]);
                     foreach (DictionaryEntry de in htClient)
                     {
                         DataItem dataitem = (DataItem)de.Value;
-                        if (dataitem.intDeviceID == ChoosedDeviceID)
+                        //if (dataitem.intDeviceID == ChoosedDeviceID)
+                        if (String.Compare(dataitem.strAddress+"--" + dataitem.intDeviceID.ToString(), ChoosedAddress) == 0)
                         {
                             dataitem.isChoosed = true;
                             IDString += dataitem.intDeviceID + ";";//显示设备ID,用";"隔开

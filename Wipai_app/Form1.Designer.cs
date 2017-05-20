@@ -182,9 +182,9 @@
             // DeviceCheckedListBox1
             // 
             this.DeviceCheckedListBox1.FormattingEnabled = true;
-            this.DeviceCheckedListBox1.Location = new System.Drawing.Point(10, 21);
+            this.DeviceCheckedListBox1.Location = new System.Drawing.Point(0, 21);
             this.DeviceCheckedListBox1.Name = "DeviceCheckedListBox1";
-            this.DeviceCheckedListBox1.Size = new System.Drawing.Size(145, 468);
+            this.DeviceCheckedListBox1.Size = new System.Drawing.Size(175, 468);
             this.DeviceCheckedListBox1.TabIndex = 0;
             // 
             // groupBox6
