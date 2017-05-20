@@ -733,7 +733,7 @@ namespace Wipai_app
                                                          //byte[] APname1= APnameBox.Text.
             Cmd[0] = 0xA5;
             Cmd[1] = 0xA5;
-            Cmd[2] = 0x28;
+            Cmd[2] = 0x31;
             //Cmd[3] = ID[0];
             //Cmd[4] = ID[1];
             //Cmd[5] = ID[2];
@@ -770,10 +770,10 @@ namespace Wipai_app
         private void BtnSetAPpassword_Click(object sender, EventArgs e)
         {
             byte[] Cmd = new byte[23];
-            byte[] SetAPpassword = strToHexByte(APpasswordBox.Text);
+            byte[] SetAPpassword = strToByte(APpasswordBox.Text);
             Cmd[0] = 0xA5;
             Cmd[1] = 0xA5;
-            Cmd[2] = 0x29;
+            Cmd[2] = 0x32;
             //Cmd[3] = ID[0];
             //Cmd[4] = ID[1];
             //Cmd[5] = ID[2];
