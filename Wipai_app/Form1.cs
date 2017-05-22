@@ -1082,7 +1082,7 @@ namespace Wipai_app
             }
         }
 
-        public static void TimerTest(object source, ElapsedEventArgs e)
+       /* public static void TimerTest(object source, ElapsedEventArgs e)
         {
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             Console.WriteLine("OK, test event is fired at: " + timestamp);
@@ -1096,7 +1096,7 @@ namespace Wipai_app
             timer.Interval = 10000; //执行间隔时间,单位为毫秒; 这里实际间隔为10秒  
             timer.Start();
             timer.Elapsed += new System.Timers.ElapsedEventHandler(TimerTest);
-        }
+        }*/
 
        /* //设置开启和关闭时长
         private void BtnSetOpenAndCloseTime_Click(object sender, EventArgs e)
@@ -1121,6 +1121,30 @@ namespace Wipai_app
             CmdSetOpenAndCloseTime[11] = (byte)(CloseTime >> 8);
             CmdSetOpenAndCloseTime[12] = (byte)(CloseTime & 0xFF);
             SendCmdAll(CmdSetOpenAndCloseTime);
+        }
+
+        //获取时间戳
+        private void btn_GetTimeStamp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //计算距离
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //打开热点
+        private void OpenVirtualWIFI_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //关闭热点
+        private void CloseVirtualWIFI_Click(object sender, EventArgs e)
+        {
+
         }
     }//对应public partial class Form1 : Form
 

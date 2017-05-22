@@ -34,7 +34,12 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.receiveDatarichTextBox = new System.Windows.Forms.RichTextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.BtnSendOnTime = new System.Windows.Forms.Button();
+            this.CloseVirtualWIFI = new System.Windows.Forms.Button();
+            this.OpenVirtualWIFI = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.passWordBox = new System.Windows.Forms.TextBox();
+            this.ssidBox = new System.Windows.Forms.TextBox();
             this.Btn0hooseDevice = new System.Windows.Forms.Button();
             this.DeviceCheckedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -56,6 +61,8 @@
             this.radioBtnWindowShow = new System.Windows.Forms.RadioButton();
             this.radioBtnSaveFile = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btn_GetTimeStamp = new System.Windows.Forms.Button();
+            this.btn_GetDistance = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -148,7 +155,12 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.BtnSendOnTime);
+            this.groupBox5.Controls.Add(this.CloseVirtualWIFI);
+            this.groupBox5.Controls.Add(this.OpenVirtualWIFI);
+            this.groupBox5.Controls.Add(this.label22);
+            this.groupBox5.Controls.Add(this.label21);
+            this.groupBox5.Controls.Add(this.passWordBox);
+            this.groupBox5.Controls.Add(this.ssidBox);
             this.groupBox5.Controls.Add(this.Btn0hooseDevice);
             this.groupBox5.Controls.Add(this.DeviceCheckedListBox1);
             this.groupBox5.Location = new System.Drawing.Point(14, 203);
@@ -158,22 +170,64 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "设备列表";
             // 
-            // BtnSendOnTime
+            // CloseVirtualWIFI
             // 
-            this.BtnSendOnTime.Location = new System.Drawing.Point(10, 562);
-            this.BtnSendOnTime.Name = "BtnSendOnTime";
-            this.BtnSendOnTime.Size = new System.Drawing.Size(145, 23);
-            this.BtnSendOnTime.TabIndex = 16;
-            this.BtnSendOnTime.Text = "定时发送";
-            this.BtnSendOnTime.UseVisualStyleBackColor = true;
-            this.BtnSendOnTime.Click += new System.EventHandler(this.BtnSendOnTime_Click);
+            this.CloseVirtualWIFI.Location = new System.Drawing.Point(100, 463);
+            this.CloseVirtualWIFI.Name = "CloseVirtualWIFI";
+            this.CloseVirtualWIFI.Size = new System.Drawing.Size(69, 51);
+            this.CloseVirtualWIFI.TabIndex = 21;
+            this.CloseVirtualWIFI.Text = "关闭热点";
+            this.CloseVirtualWIFI.UseVisualStyleBackColor = true;
+            this.CloseVirtualWIFI.Click += new System.EventHandler(this.CloseVirtualWIFI_Click);
+            // 
+            // OpenVirtualWIFI
+            // 
+            this.OpenVirtualWIFI.Location = new System.Drawing.Point(1, 463);
+            this.OpenVirtualWIFI.Name = "OpenVirtualWIFI";
+            this.OpenVirtualWIFI.Size = new System.Drawing.Size(69, 51);
+            this.OpenVirtualWIFI.TabIndex = 20;
+            this.OpenVirtualWIFI.Text = "打开热点";
+            this.OpenVirtualWIFI.UseVisualStyleBackColor = true;
+            this.OpenVirtualWIFI.Click += new System.EventHandler(this.OpenVirtualWIFI_Click);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(-1, 423);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(59, 12);
+            this.label22.TabIndex = 19;
+            this.label22.Text = "热点名称:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(-2, 396);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(59, 12);
+            this.label21.TabIndex = 18;
+            this.label21.Text = "热点名称:";
+            // 
+            // passWordBox
+            // 
+            this.passWordBox.Location = new System.Drawing.Point(63, 420);
+            this.passWordBox.Name = "passWordBox";
+            this.passWordBox.Size = new System.Drawing.Size(112, 21);
+            this.passWordBox.TabIndex = 17;
+            // 
+            // ssidBox
+            // 
+            this.ssidBox.Location = new System.Drawing.Point(63, 393);
+            this.ssidBox.Name = "ssidBox";
+            this.ssidBox.Size = new System.Drawing.Size(112, 21);
+            this.ssidBox.TabIndex = 16;
             // 
             // Btn0hooseDevice
             // 
             this.Btn0hooseDevice.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.Btn0hooseDevice.Location = new System.Drawing.Point(10, 495);
+            this.Btn0hooseDevice.Location = new System.Drawing.Point(0, 335);
             this.Btn0hooseDevice.Name = "Btn0hooseDevice";
-            this.Btn0hooseDevice.Size = new System.Drawing.Size(145, 25);
+            this.Btn0hooseDevice.Size = new System.Drawing.Size(175, 25);
             this.Btn0hooseDevice.TabIndex = 15;
             this.Btn0hooseDevice.Text = "选定设备";
             this.Btn0hooseDevice.UseVisualStyleBackColor = true;
@@ -184,7 +238,7 @@
             this.DeviceCheckedListBox1.FormattingEnabled = true;
             this.DeviceCheckedListBox1.Location = new System.Drawing.Point(0, 21);
             this.DeviceCheckedListBox1.Name = "DeviceCheckedListBox1";
-            this.DeviceCheckedListBox1.Size = new System.Drawing.Size(175, 468);
+            this.DeviceCheckedListBox1.Size = new System.Drawing.Size(175, 308);
             this.DeviceCheckedListBox1.TabIndex = 0;
             // 
             // groupBox6
@@ -382,6 +436,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btn_GetTimeStamp);
+            this.groupBox2.Controls.Add(this.btn_GetDistance);
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.radioBtnSaveFile);
             this.groupBox2.Controls.Add(this.radioBtnWindowShow);
@@ -397,6 +453,28 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "功能操作";
+            // 
+            // btn_GetTimeStamp
+            // 
+            this.btn_GetTimeStamp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_GetTimeStamp.Location = new System.Drawing.Point(6, 137);
+            this.btn_GetTimeStamp.Name = "btn_GetTimeStamp";
+            this.btn_GetTimeStamp.Size = new System.Drawing.Size(85, 29);
+            this.btn_GetTimeStamp.TabIndex = 45;
+            this.btn_GetTimeStamp.Text = "获取时间戳";
+            this.btn_GetTimeStamp.UseVisualStyleBackColor = true;
+            this.btn_GetTimeStamp.Click += new System.EventHandler(this.btn_GetTimeStamp_Click);
+            // 
+            // btn_GetDistance
+            // 
+            this.btn_GetDistance.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_GetDistance.Location = new System.Drawing.Point(6, 100);
+            this.btn_GetDistance.Name = "btn_GetDistance";
+            this.btn_GetDistance.Size = new System.Drawing.Size(84, 31);
+            this.btn_GetDistance.TabIndex = 13;
+            this.btn_GetDistance.Text = "计算距离";
+            this.btn_GetDistance.UseVisualStyleBackColor = true;
+            this.btn_GetDistance.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -775,6 +853,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -846,7 +925,6 @@
         private System.Windows.Forms.Button BtnSetPort;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnCloseServer;
-        private System.Windows.Forms.Button BtnSendOnTime;
         //private System.Windows.Forms.Button BtnSetOpenTime;
         //private System.Windows.Forms.TextBox textBoxCloseTime;
         //private System.Windows.Forms.TextBox textBoxOpenTime;
@@ -856,6 +934,14 @@
         private System.Windows.Forms.TextBox textBoxCloseTime;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button btn_GetDistance;
+        private System.Windows.Forms.Button btn_GetTimeStamp;
+        private System.Windows.Forms.Button CloseVirtualWIFI;
+        private System.Windows.Forms.Button OpenVirtualWIFI;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox passWordBox;
+        private System.Windows.Forms.TextBox ssidBox;
     }
 }
 
