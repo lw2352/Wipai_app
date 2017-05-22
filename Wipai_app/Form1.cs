@@ -326,7 +326,11 @@ namespace Wipai_app
                             ShowMsg(msg);
 
                             //StatusBox.Text = "数据采集完毕";
-                            progressBar1.Value = 0;
+                            //!!!待测
+                            if (progressBar1.Value == progressBar1.Maximum)
+                            {
+                                progressBar1.Value = 0;
+                            }
                             //DebugLog.Debug("设备ID为" + dataitem.intDeviceID + "数据采集完毕");
                         }
                     }
@@ -1132,7 +1136,10 @@ namespace Wipai_app
         //计算距离
         private void button2_Click(object sender, EventArgs e)
         {
-
+            double lat1 = 3027.40731;
+            double lng1 = 11423.83586;
+            double l = GetDistance.();
+            ShowMsg("两点间的距离是：" + l.ToString() + "米");
         }
 
         //打开热点
