@@ -306,6 +306,7 @@ namespace Wipai_app
                     if (checkIsPureData(dataitem.SingleBuffer))
                     {
                         dataitem.currentsendbulk++;
+                        progressBar1.Value = progressBar1.Value + dataitem.currentsendbulk;
 
                         for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
                         {
@@ -325,7 +326,7 @@ namespace Wipai_app
                             ShowMsg(msg);
 
                             //StatusBox.Text = "数据采集完毕";
-                            //progressBar1.Value = 0;
+                            progressBar1.Value = 0;
                             //DebugLog.Debug("设备ID为" + dataitem.intDeviceID + "数据采集完毕");
                         }
                     }
@@ -577,6 +578,7 @@ namespace Wipai_app
             //int ChoosedDeviceID;//当前已选择的设备
             string ChoosedAddress;
             string IDString = "";
+            int num = 0;
             for (int i = 0; i < DeviceCheckedListBox1.Items.Count; i++)
             {
                 if (DeviceCheckedListBox1.GetItemChecked(i))
@@ -589,11 +591,13 @@ namespace Wipai_app
                         if (String.Compare(dataitem.strAddress+"--" + dataitem.intDeviceID.ToString(), ChoosedAddress) == 0)
                         {
                             dataitem.isChoosed = true;
+                            num++;
                             IDString += dataitem.intDeviceID + ";";//显示设备ID,用";"隔开
                         }
                     }
                 }
             }
+            progressBar1.Maximum = num * g_totalPackageCount;
             IDBox.Text = (IDString);
             //DebugLog.Debug("选定设备ID有："+ IDString);
         }
