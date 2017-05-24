@@ -34,6 +34,9 @@ namespace Wipai_app
 
         private delegate void ShowMsgHandler(string msg);
 
+        cmdHelper processCMD = new cmdHelper();
+        GetDistance getDistance = new GetDistance();
+
         private void ShowMsg(string msg)
         {
             if (!receiveDatarichTextBox.InvokeRequired)
@@ -164,6 +167,11 @@ namespace Wipai_app
                     dataitem.isSendDataToServer = false;
                     dataitem.SingleBuffer = new byte[perPackageLength];
                     dataitem.strAddress = strAddress;
+
+                    dataitem.byteTimeStamp = new byte[6];//时间戳
+                    dataitem.Longitude = 0;//经度，后半段
+                    dataitem.Latitude = 0;//纬度， 前半段
+
                     htClient.Add(strAddress, dataitem);
    
                     //Once the client connects then start receiving the commands from her
@@ -239,6 +247,10 @@ namespace Wipai_app
                                 dataitem.SingleBuffer = new byte[perPackageLength];
                                 dataitem.strAddress = strAddress;
 
+                                dataitem.byteTimeStamp = olddataitem.byteTimeStamp;//时间戳
+                                dataitem.Longitude = olddataitem.Longitude;//经度，后半段
+                                dataitem.Latitude = olddataitem.Latitude;//纬度， 前半段
+
                                 htClient.Remove(oldAddress);//删除旧地址的键值对
                                 string OldAddress = oldAddress + "--" + dataitem.intDeviceID.ToString();
                                 DeviceCheckedListBox1.Items.Remove(OldAddress);
@@ -287,6 +299,24 @@ namespace Wipai_app
 
                     }
 
+                    if (checkISGpsData(dataitem.SingleBuffer) != null)
+                    {
+                        int[] gpsData = new int[23];
+                        gpsData = checkISGpsData(dataitem.SingleBuffer);
+                                               
+                        dataitem.Latitude = (gpsData[1] - 0x30) * 10.0 + (gpsData[2] - 0x30);
+                           
+                        dataitem.Latitude += ((gpsData[3] - 0x30) * 10 + (gpsData[4] - 0x30)) / 60.0;
+
+                        dataitem.Latitude += ((gpsData[6] - 0x30) / 10.0 + (gpsData[7] - 0x30)/100.0 + (gpsData[8] - 0x30) / 1000.0 + (gpsData[9] - 0x30) / 10000.0 + (gpsData[10] - 0x30) / 100000.0) / 60.0;
+
+                        dataitem.Longitude = (gpsData[12] - 0x30) * 100 + (gpsData[13] - 0x30)*10 + (gpsData[14] - 0x30);
+
+                        dataitem.Longitude += ((gpsData[15] - 0x30) * 10 + (gpsData[16] - 0x30)) / 60.0;
+
+                        dataitem.Longitude += ((gpsData[18] - 0x30) / 10.0 + (gpsData[19] - 0x30) / 100.0 + (gpsData[20] - 0x30) / 1000.0 + (gpsData[21] - 0x30) / 10000.0 + (gpsData[22] - 0x30) / 100000.0) / 60.0;
+                    }
+
                     //add 5-3
                    /* if (checkIsAllCmdStage1())//采样完成
                     {
@@ -305,33 +335,46 @@ namespace Wipai_app
                     //处理AD数据（收到纯数据时保存到一个60万大小的数组中）
                     if (checkIsPureData(dataitem.SingleBuffer))
                     {
-                        dataitem.currentsendbulk++;
-                        progressBar1.Value = progressBar1.Value + dataitem.currentsendbulk;
-
-                        for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                        if (dataitem.isSendDataToServer == true)
                         {
-                            dataitem.byteAllData[dataitem.datalength++] = dataitem.SingleBuffer[i];
+                            dataitem.currentsendbulk++;
+                            progressBar1.Value = progressBar1.Value + dataitem.currentsendbulk;
+
+                            for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                            {
+                                dataitem.byteAllData[dataitem.datalength++] = dataitem.SingleBuffer[i];
+                            }
+
+                            if (dataitem.datalength == g_datafulllength)//1000*600 = 600000;
+                            {
+                                StoreDataToFile(dataitem.intDeviceID, dataitem.byteAllData);
+                                //dataitem.totalsendbulk = 0;
+                                dataitem.currentsendbulk = 0;
+                                dataitem.isSendDataToServer = false;
+                                dataitem.CmdStage = 3;
+
+                                string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--数据上传完毕" + "\n";
+                                Console.WriteLine(msg);
+                                ShowMsg(msg);
+
+                                //StatusBox.Text = "数据采集完毕";
+                                //!!!待测
+                                if (progressBar1.Value == progressBar1.Maximum)
+                                {
+                                    progressBar1.Value = 0;
+                                }
+                                //DebugLog.Debug("设备ID为" + dataitem.intDeviceID + "数据采集完毕");
+                            }
                         }
-
-                        if (dataitem.datalength == g_datafulllength)//1000*600 = 600000;
+                        else
                         {
-                            StoreDataToFile(dataitem.intDeviceID, dataitem.byteAllData);
-                            //dataitem.totalsendbulk = 0;
-                            dataitem.currentsendbulk = 0;
-                            dataitem.isSendDataToServer = false;
-                            dataitem.CmdStage = 3;
-
-                            string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--数据上传完毕" + "\n";
+                            for (int i = 368,j = 0; i <= 373; i++, j++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                            {
+                                dataitem.byteTimeStamp[j] = (byte)(Convert.ToInt32(dataitem.SingleBuffer[i]) - 0x30);
+                            }
+                            string msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + dataitem.strAddress + "设备号--" + dataitem.intDeviceID + "--时间戳是:" + byteToHexStr(dataitem.byteTimeStamp) + "\n";
                             Console.WriteLine(msg);
                             ShowMsg(msg);
-
-                            //StatusBox.Text = "数据采集完毕";
-                            //!!!待测
-                            if (progressBar1.Value == progressBar1.Maximum)
-                            {
-                                progressBar1.Value = 0;
-                            }
-                            //DebugLog.Debug("设备ID为" + dataitem.intDeviceID + "数据采集完毕");
                         }
                     }
 
@@ -446,6 +489,23 @@ namespace Wipai_app
             src[0] = (byte)((value >> 8) & 0xFF);
             src[1] = (byte)(value & 0xFF);
             return src;
+        }
+
+        private int[] checkISGpsData(byte[] buffer)
+        {
+            int[] gpsData = new int[23];
+            if (buffer[0] == 0xA5 && buffer[1] == 0xA5 && buffer[2] == 0x27 && buffer[32] == 0xFF && buffer[33] == 0x5A && buffer[34] == 0x5A)
+            {
+                for (int i = 0; i < 23; i++)
+                {
+                    gpsData[i] = buffer[9+i];
+                }
+                return gpsData;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         //检查是否是心跳包，主要检查命令码即可
@@ -810,7 +870,7 @@ namespace Wipai_app
             //CmdLength = 23;
             SendCmdAll(Cmd);
         }
-        //设置服务端IP地址和端口号
+        //设置服务端IP地址
         private void BtnSetIPnameAndPort_Click(object sender, EventArgs e)
         {
 
@@ -1086,35 +1146,6 @@ namespace Wipai_app
             }
         }
 
-       /* public static void TimerTest(object source, ElapsedEventArgs e)
-        {
-            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            Console.WriteLine("OK, test event is fired at: " + timestamp);
-
-        }
-
-        private void BtnSendOnTime_Click(object sender, EventArgs e)
-        {
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Enabled = true;
-            timer.Interval = 10000; //执行间隔时间,单位为毫秒; 这里实际间隔为10秒  
-            timer.Start();
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(TimerTest);
-        }*/
-
-       /* //设置开启和关闭时长
-        private void BtnSetOpenAndCloseTime_Click(object sender, EventArgs e)
-        {
-            byte[] CmdSetOpenAndCloseTime = new byte[] { 0xA5, 0xA5, 0x26, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x02, 0xFF, 0xFF, 0xFF, 0x5A, 0x5A };//设置开启时长
-            int OpenTime = 2 * Convert.ToInt32(textBoxOpenTime.Text);
-            int CloseTime = 2 * Convert.ToInt32(textBoxCloseTime.Text);
-            CmdSetOpenAndCloseTime[9] = (byte)(OpenTime >> 8);
-            CmdSetOpenAndCloseTime[10] = (byte)(OpenTime & 0xFF);
-            CmdSetOpenAndCloseTime[11] = (byte)(CloseTime >> 8);
-            CmdSetOpenAndCloseTime[12] = (byte)(CloseTime & 0xFF);
-            SendCmdAll(CmdSetOpenAndCloseTime);
-        }*/
-
         private void BtnSetOpenAndCloseTime_Click_1(object sender, EventArgs e)
         {
             byte[] CmdSetOpenAndCloseTime = new byte[] { 0xA5, 0xA5, 0x26, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x04, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x5A, 0x5A };//设置开启时长
@@ -1130,28 +1161,103 @@ namespace Wipai_app
         //获取时间戳
         private void btn_GetTimeStamp_Click(object sender, EventArgs e)
         {
-
+            foreach (DictionaryEntry de in htClient)
+            {
+                DataItem dataitem = (DataItem)de.Value;
+                if (dataitem.isChoosed == true && dataitem.intDeviceID != 0)
+                {
+                    SendCmdSingle(SetADcmd(655), dataitem.byteDeviceID, dataitem.socket);
+                }
+            }
         }
 
         //计算距离
         private void button2_Click(object sender, EventArgs e)
         {
-            double lat1 = 3027.40731;
-            double lng1 = 11423.83586;
-            double l = GetDistance.();
-            ShowMsg("两点间的距离是：" + l.ToString() + "米");
+            double lat1 = 0;
+            double lng1 = 0;
+            double lat2 = 0;
+            double lng2 = 0;
+
+            int num = 0;
+
+            foreach (DictionaryEntry de in htClient)
+            {
+                DataItem dataitem = (DataItem)de.Value;
+                if (dataitem.isChoosed == true && dataitem.intDeviceID != 0)
+                {
+                    num++;
+                    if (num == 1)
+                    {
+                        lat1 = dataitem.Latitude;
+                        lng1 = dataitem.Longitude;
+                    }
+                    else if (num == 2)
+                    {
+                        lat2 = dataitem.Latitude;
+                        lng2 = dataitem.Longitude;
+                    }
+                    else break;
+                }
+            }
+
+            double length = getDistance.caculateDistance(lat1, lng1, lat2, lng2);
+            ShowMsg("两点间的距离是：" + length.ToString() + "米" + "\n");
         }
 
         //打开热点
         private void OpenVirtualWIFI_Click(object sender, EventArgs e)
         {
+            string output = "";
+            string cmd = "netsh wlan set hostednetwork mode = allow ssid = "+ ssidBox.Text + " key = " + passWordBox.Text;
+            processCMD.RunCmd(cmd, out output);
+            //MessageBox.Show(output);
 
+            cmd = "netsh wlan start hostednetwork";
+            processCMD.RunCmd(cmd, out output);
+            MessageBox.Show(output);
         }
 
         //关闭热点
         private void CloseVirtualWIFI_Click(object sender, EventArgs e)
         {
+            string output = "";
+            string cmd = "netsh wlan stop hostednetwork";
+            processCMD.RunCmd(cmd, out output);
+            MessageBox.Show(output);
+        }
 
+        private void btn_ChangeVirtualIP_Click(object sender, EventArgs e)
+        {
+            string output = "";
+            string cmd = "netsh interface ip set address \"" + textBoxVirtuaName.Text + "\" static "+ textBoxVirtualIP.Text+ " " +textBoxSubnetMask.Text + " " + textBoxGateWay.Text + " 1";
+
+            processCMD.RunCmd(cmd, out output);
+            MessageBox.Show(output);
+        }
+
+        private void ReadAPName_Click(object sender, EventArgs e)
+        {
+            byte[] CmdReadAPName = new byte[] { 0xA5, 0xA5, 0x31, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x5A, 0x5A };
+            SendCmdAll(CmdReadAPName);
+        }
+
+        private void ReadAPPassword_Click(object sender, EventArgs e)
+        {
+            byte[] CmdReadAPPassword = new byte[] { 0xA5, 0xA5, 0x32, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x5A, 0x5A };
+            SendCmdAll(CmdReadAPPassword);
+        }
+
+        private void ReadServerIP_Click(object sender, EventArgs e)
+        {
+            byte[] CmdReadServerIP = new byte[] { 0xA5, 0xA5, 0x29, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x5A, 0x5A };
+            SendCmdAll(CmdReadServerIP);
+        }
+
+        private void ReadServerPort_Click(object sender, EventArgs e)
+        {
+            byte[] CmdReadServerPort = new byte[] { 0xA5, 0xA5, 0x30, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0x5A, 0x5A };
+            SendCmdAll(CmdReadServerPort);
         }
     }//对应public partial class Form1 : Form
 

@@ -34,6 +34,16 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.receiveDatarichTextBox = new System.Windows.Forms.RichTextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.textBoxVirtuaName = new System.Windows.Forms.TextBox();
+            this.textBoxGateWay = new System.Windows.Forms.TextBox();
+            this.textBoxSubnetMask = new System.Windows.Forms.TextBox();
+            this.btn_ChangeVirtualIP = new System.Windows.Forms.Button();
+            this.textBoxVirtualIP = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.CloseVirtualWIFI = new System.Windows.Forms.Button();
             this.OpenVirtualWIFI = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
@@ -90,7 +100,6 @@
             this.textBoxCloseTime = new System.Windows.Forms.TextBox();
             this.BtnSetOpenAndCloseTime = new System.Windows.Forms.Button();
             this.textBoxOpenTime = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
             this.BtnSetPort = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -99,6 +108,10 @@
             this.label14 = new System.Windows.Forms.Label();
             this.IPtextBox3 = new System.Windows.Forms.TextBox();
             this.IPtextBox2 = new System.Windows.Forms.TextBox();
+            this.ReadAPName = new System.Windows.Forms.Button();
+            this.ReadAPPassword = new System.Windows.Forms.Button();
+            this.ReadServerIP = new System.Windows.Forms.Button();
+            this.ReadServerPort = new System.Windows.Forms.Button();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -155,6 +168,16 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label27);
+            this.groupBox5.Controls.Add(this.label26);
+            this.groupBox5.Controls.Add(this.label25);
+            this.groupBox5.Controls.Add(this.label24);
+            this.groupBox5.Controls.Add(this.textBoxVirtuaName);
+            this.groupBox5.Controls.Add(this.textBoxGateWay);
+            this.groupBox5.Controls.Add(this.textBoxSubnetMask);
+            this.groupBox5.Controls.Add(this.btn_ChangeVirtualIP);
+            this.groupBox5.Controls.Add(this.textBoxVirtualIP);
+            this.groupBox5.Controls.Add(this.label23);
             this.groupBox5.Controls.Add(this.CloseVirtualWIFI);
             this.groupBox5.Controls.Add(this.OpenVirtualWIFI);
             this.groupBox5.Controls.Add(this.label22);
@@ -170,11 +193,95 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "设备列表";
             // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(-1, 544);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(59, 12);
+            this.label27.TabIndex = 31;
+            this.label27.Text = "默认网关:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(-1, 517);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(59, 12);
+            this.label26.TabIndex = 30;
+            this.label26.Text = "子网掩码:";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(-1, 490);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(23, 12);
+            this.label25.TabIndex = 29;
+            this.label25.Text = "IP:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(-2, 463);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(59, 12);
+            this.label24.TabIndex = 28;
+            this.label24.Text = "网卡名称:";
+            // 
+            // textBoxVirtuaName
+            // 
+            this.textBoxVirtuaName.Location = new System.Drawing.Point(64, 460);
+            this.textBoxVirtuaName.Name = "textBoxVirtuaName";
+            this.textBoxVirtuaName.Size = new System.Drawing.Size(111, 21);
+            this.textBoxVirtuaName.TabIndex = 27;
+            // 
+            // textBoxGateWay
+            // 
+            this.textBoxGateWay.Location = new System.Drawing.Point(63, 541);
+            this.textBoxGateWay.Name = "textBoxGateWay";
+            this.textBoxGateWay.Size = new System.Drawing.Size(111, 21);
+            this.textBoxGateWay.TabIndex = 26;
+            // 
+            // textBoxSubnetMask
+            // 
+            this.textBoxSubnetMask.Location = new System.Drawing.Point(63, 514);
+            this.textBoxSubnetMask.Name = "textBoxSubnetMask";
+            this.textBoxSubnetMask.Size = new System.Drawing.Size(111, 21);
+            this.textBoxSubnetMask.TabIndex = 25;
+            this.textBoxSubnetMask.Text = "255.255.255.0";
+            // 
+            // btn_ChangeVirtualIP
+            // 
+            this.btn_ChangeVirtualIP.Location = new System.Drawing.Point(118, 568);
+            this.btn_ChangeVirtualIP.Name = "btn_ChangeVirtualIP";
+            this.btn_ChangeVirtualIP.Size = new System.Drawing.Size(56, 23);
+            this.btn_ChangeVirtualIP.TabIndex = 24;
+            this.btn_ChangeVirtualIP.Text = "确定";
+            this.btn_ChangeVirtualIP.UseVisualStyleBackColor = true;
+            this.btn_ChangeVirtualIP.Click += new System.EventHandler(this.btn_ChangeVirtualIP_Click);
+            // 
+            // textBoxVirtualIP
+            // 
+            this.textBoxVirtualIP.Location = new System.Drawing.Point(63, 487);
+            this.textBoxVirtualIP.Name = "textBoxVirtualIP";
+            this.textBoxVirtualIP.Size = new System.Drawing.Size(111, 21);
+            this.textBoxVirtualIP.TabIndex = 23;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(5, 445);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(89, 12);
+            this.label23.TabIndex = 22;
+            this.label23.Text = "配置热点参数：";
+            // 
             // CloseVirtualWIFI
             // 
-            this.CloseVirtualWIFI.Location = new System.Drawing.Point(100, 463);
+            this.CloseVirtualWIFI.Location = new System.Drawing.Point(88, 405);
             this.CloseVirtualWIFI.Name = "CloseVirtualWIFI";
-            this.CloseVirtualWIFI.Size = new System.Drawing.Size(69, 51);
+            this.CloseVirtualWIFI.Size = new System.Drawing.Size(86, 27);
             this.CloseVirtualWIFI.TabIndex = 21;
             this.CloseVirtualWIFI.Text = "关闭热点";
             this.CloseVirtualWIFI.UseVisualStyleBackColor = true;
@@ -182,9 +289,9 @@
             // 
             // OpenVirtualWIFI
             // 
-            this.OpenVirtualWIFI.Location = new System.Drawing.Point(1, 463);
+            this.OpenVirtualWIFI.Location = new System.Drawing.Point(0, 405);
             this.OpenVirtualWIFI.Name = "OpenVirtualWIFI";
-            this.OpenVirtualWIFI.Size = new System.Drawing.Size(69, 51);
+            this.OpenVirtualWIFI.Size = new System.Drawing.Size(82, 27);
             this.OpenVirtualWIFI.TabIndex = 20;
             this.OpenVirtualWIFI.Text = "打开热点";
             this.OpenVirtualWIFI.UseVisualStyleBackColor = true;
@@ -193,16 +300,16 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(-1, 423);
+            this.label22.Location = new System.Drawing.Point(110, 363);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(59, 12);
             this.label22.TabIndex = 19;
-            this.label22.Text = "热点名称:";
+            this.label22.Text = "热点密码:";
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(-2, 396);
+            this.label21.Location = new System.Drawing.Point(-1, 363);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(59, 12);
             this.label21.TabIndex = 18;
@@ -210,16 +317,16 @@
             // 
             // passWordBox
             // 
-            this.passWordBox.Location = new System.Drawing.Point(63, 420);
+            this.passWordBox.Location = new System.Drawing.Point(88, 378);
             this.passWordBox.Name = "passWordBox";
-            this.passWordBox.Size = new System.Drawing.Size(112, 21);
+            this.passWordBox.Size = new System.Drawing.Size(87, 21);
             this.passWordBox.TabIndex = 17;
             // 
             // ssidBox
             // 
-            this.ssidBox.Location = new System.Drawing.Point(63, 393);
+            this.ssidBox.Location = new System.Drawing.Point(1, 378);
             this.ssidBox.Name = "ssidBox";
-            this.ssidBox.Size = new System.Drawing.Size(112, 21);
+            this.ssidBox.Size = new System.Drawing.Size(81, 21);
             this.ssidBox.TabIndex = 16;
             // 
             // Btn0hooseDevice
@@ -658,7 +765,7 @@
             // BtnSetIPname
             // 
             this.BtnSetIPname.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.BtnSetIPname.Location = new System.Drawing.Point(314, 114);
+            this.BtnSetIPname.Location = new System.Drawing.Point(314, 116);
             this.BtnSetIPname.Name = "BtnSetIPname";
             this.BtnSetIPname.Size = new System.Drawing.Size(52, 23);
             this.BtnSetIPname.TabIndex = 21;
@@ -668,12 +775,15 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.ReadServerPort);
+            this.groupBox3.Controls.Add(this.ReadServerIP);
+            this.groupBox3.Controls.Add(this.ReadAPPassword);
+            this.groupBox3.Controls.Add(this.ReadAPName);
             this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this.label19);
             this.groupBox3.Controls.Add(this.textBoxCloseTime);
             this.groupBox3.Controls.Add(this.BtnSetOpenAndCloseTime);
             this.groupBox3.Controls.Add(this.textBoxOpenTime);
-            this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Controls.Add(this.BtnSetPort);
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label16);
@@ -713,7 +823,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label20.Location = new System.Drawing.Point(385, 74);
+            this.label20.Location = new System.Drawing.Point(385, 71);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(53, 12);
             this.label20.TabIndex = 43;
@@ -723,7 +833,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label19.Location = new System.Drawing.Point(333, 74);
+            this.label19.Location = new System.Drawing.Point(333, 71);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(53, 12);
             this.label19.TabIndex = 42;
@@ -731,14 +841,14 @@
             // 
             // textBoxCloseTime
             // 
-            this.textBoxCloseTime.Location = new System.Drawing.Point(387, 91);
+            this.textBoxCloseTime.Location = new System.Drawing.Point(387, 88);
             this.textBoxCloseTime.Name = "textBoxCloseTime";
             this.textBoxCloseTime.Size = new System.Drawing.Size(46, 21);
             this.textBoxCloseTime.TabIndex = 41;
             // 
             // BtnSetOpenAndCloseTime
             // 
-            this.BtnSetOpenAndCloseTime.Location = new System.Drawing.Point(443, 92);
+            this.BtnSetOpenAndCloseTime.Location = new System.Drawing.Point(443, 89);
             this.BtnSetOpenAndCloseTime.Name = "BtnSetOpenAndCloseTime";
             this.BtnSetOpenAndCloseTime.Size = new System.Drawing.Size(42, 23);
             this.BtnSetOpenAndCloseTime.TabIndex = 40;
@@ -748,20 +858,10 @@
             // 
             // textBoxOpenTime
             // 
-            this.textBoxOpenTime.Location = new System.Drawing.Point(335, 91);
+            this.textBoxOpenTime.Location = new System.Drawing.Point(335, 88);
             this.textBoxOpenTime.Name = "textBoxOpenTime";
             this.textBoxOpenTime.Size = new System.Drawing.Size(46, 21);
             this.textBoxOpenTime.TabIndex = 36;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label18.Location = new System.Drawing.Point(204, 94);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(125, 12);
-            this.label18.TabIndex = 30;
-            this.label18.Text = "设置开启和关闭时长：";
             // 
             // BtnSetPort
             // 
@@ -834,6 +934,50 @@
             this.IPtextBox2.Name = "IPtextBox2";
             this.IPtextBox2.Size = new System.Drawing.Size(36, 21);
             this.IPtextBox2.TabIndex = 22;
+            // 
+            // ReadAPName
+            // 
+            this.ReadAPName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadAPName.Location = new System.Drawing.Point(209, 63);
+            this.ReadAPName.Name = "ReadAPName";
+            this.ReadAPName.Size = new System.Drawing.Size(38, 23);
+            this.ReadAPName.TabIndex = 44;
+            this.ReadAPName.Text = "读取";
+            this.ReadAPName.UseVisualStyleBackColor = true;
+            this.ReadAPName.Click += new System.EventHandler(this.ReadAPName_Click);
+            // 
+            // ReadAPPassword
+            // 
+            this.ReadAPPassword.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadAPPassword.Location = new System.Drawing.Point(209, 89);
+            this.ReadAPPassword.Name = "ReadAPPassword";
+            this.ReadAPPassword.Size = new System.Drawing.Size(38, 23);
+            this.ReadAPPassword.TabIndex = 45;
+            this.ReadAPPassword.Text = "读取";
+            this.ReadAPPassword.UseVisualStyleBackColor = true;
+            this.ReadAPPassword.Click += new System.EventHandler(this.ReadAPPassword_Click);
+            // 
+            // ReadServerIP
+            // 
+            this.ReadServerIP.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadServerIP.Location = new System.Drawing.Point(372, 116);
+            this.ReadServerIP.Name = "ReadServerIP";
+            this.ReadServerIP.Size = new System.Drawing.Size(38, 23);
+            this.ReadServerIP.TabIndex = 46;
+            this.ReadServerIP.Text = "读取";
+            this.ReadServerIP.UseVisualStyleBackColor = true;
+            this.ReadServerIP.Click += new System.EventHandler(this.ReadServerIP_Click);
+            // 
+            // ReadServerPort
+            // 
+            this.ReadServerPort.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadServerPort.Location = new System.Drawing.Point(372, 143);
+            this.ReadServerPort.Name = "ReadServerPort";
+            this.ReadServerPort.Size = new System.Drawing.Size(38, 23);
+            this.ReadServerPort.TabIndex = 47;
+            this.ReadServerPort.Text = "读取";
+            this.ReadServerPort.UseVisualStyleBackColor = true;
+            this.ReadServerPort.Click += new System.EventHandler(this.ReadServerPort_Click);
             // 
             // Form1
             // 
@@ -925,10 +1069,6 @@
         private System.Windows.Forms.Button BtnSetPort;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnCloseServer;
-        //private System.Windows.Forms.Button BtnSetOpenTime;
-        //private System.Windows.Forms.TextBox textBoxCloseTime;
-        //private System.Windows.Forms.TextBox textBoxOpenTime;
-        private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox textBoxOpenTime;
         private System.Windows.Forms.Button BtnSetOpenAndCloseTime;
         private System.Windows.Forms.TextBox textBoxCloseTime;
@@ -942,6 +1082,20 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox passWordBox;
         private System.Windows.Forms.TextBox ssidBox;
+        private System.Windows.Forms.Button btn_ChangeVirtualIP;
+        private System.Windows.Forms.TextBox textBoxVirtualIP;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBoxSubnetMask;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox textBoxVirtuaName;
+        private System.Windows.Forms.TextBox textBoxGateWay;
+        private System.Windows.Forms.Button ReadServerPort;
+        private System.Windows.Forms.Button ReadServerIP;
+        private System.Windows.Forms.Button ReadAPPassword;
+        private System.Windows.Forms.Button ReadAPName;
     }
 }
 
