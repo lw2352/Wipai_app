@@ -338,7 +338,8 @@ namespace Wipai_app
                         if (dataitem.isSendDataToServer == true)
                         {
                             dataitem.currentsendbulk++;
-                            progressBar1.Value = progressBar1.Value + dataitem.currentsendbulk;
+                            //progressBar1.Value = progressBar1.Value + dataitem.currentsendbulk;
+                            progressBar1.Value++;
 
                             for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
                             {
@@ -977,8 +978,16 @@ namespace Wipai_app
         {
             byte[] cmd = new byte[] { 0xA5, 0xA5, 0x25, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x04, 0x0A, 0x1E, 0x00, 0x00, 0xFF, 0x5A, 0x5A };
 
-            cmd[9] = (byte)DateTime.Now.Hour;
-            cmd[10] = (byte)(DateTime.Now.Minute + 5);//当前时刻加5分钟
+            if (DateTime.Now.Minute + 5 <= 60)
+            {
+                cmd[9] = (byte)DateTime.Now.Hour;
+                cmd[10] = (byte)(DateTime.Now.Minute + 5);//当前时刻加5分钟
+            }
+            else
+            { //分钟数大于60
+                cmd[9] = (byte)(DateTime.Now.Hour + 1);
+                cmd[10] = (byte)(DateTime.Now.Minute + 5 - 60);
+            }
             try
             {//此处进行遍历操作
                 foreach (DictionaryEntry de in htClient)
