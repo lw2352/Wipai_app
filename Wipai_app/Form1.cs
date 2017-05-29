@@ -12,10 +12,13 @@ using System.Net.Sockets;
 using System.IO;
 using System.Timers;
 //[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-//
+
+  
+    //TODO：如果判断Data文件夹不存在，则创建
+    //模块打包分类
+    //switch处理收到的数据
 
 
-    //5-20 注释掉自动上传流程代码，还原以前的设备选择和其他ui操作
 namespace Wipai_app
 {
 
@@ -35,7 +38,7 @@ namespace Wipai_app
         private delegate void ShowMsgHandler(string msg);
 
         cmdHelper processCMD = new cmdHelper();
-        GetDistance getDistance = new GetDistance();
+        GPSDistance getDistance = new GPSDistance();
 
         private void ShowMsg(string msg)
         {
@@ -50,7 +53,35 @@ namespace Wipai_app
             }
 
         }
-        
+
+        private void AddAddress(string msg)
+        {
+            if (!receiveDatarichTextBox.InvokeRequired)
+            {
+                DeviceCheckedListBox1.Items.Add(msg);
+            }
+            else
+            {
+                ShowMsgHandler handler = new ShowMsgHandler(AddAddress);
+                BeginInvoke(handler, new object[] { msg });
+            }
+
+        }
+
+        private void RemoveAddress(string msg)
+        {
+            if (!receiveDatarichTextBox.InvokeRequired)
+            {
+                DeviceCheckedListBox1.Items.Remove(msg);
+            }
+            else
+            {
+                ShowMsgHandler handler = new ShowMsgHandler(RemoveAddress);
+                BeginInvoke(handler, new object[] { msg });
+            }
+
+        }
+
 
         public Form1()
         {
@@ -173,7 +204,8 @@ namespace Wipai_app
                     dataitem.Latitude = 0;//纬度， 前半段
 
                     htClient.Add(strAddress, dataitem);
-   
+
+                    ShowMsg(DateTime.Now.ToString() + "收到客户端"+ strAddress + "的连接请求" + "\n");
                     //Once the client connects then start receiving the commands from her
                     //开始从连接的socket异步接收数据
                     clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None,
@@ -266,7 +298,8 @@ namespace Wipai_app
                                 dataitem.byteDeviceID = ID;
 
                                 string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
-                                DeviceCheckedListBox1.Items.Add(newAddress);
+                                //DeviceCheckedListBox1.Items.Add(newAddress);
+                                AddAddress(newAddress);
                             }
                         }//if (dataitem.intDeviceID == 0)
                     }//end if (checkIsHeartPackage())   
@@ -1210,7 +1243,7 @@ namespace Wipai_app
                 }
             }
 
-            double length = getDistance.caculateDistance(lat1, lng1, lat2, lng2);
+            double length = getDistance.getDistance(lat1, lng1, lat2, lng2);
             ShowMsg("两点间的距离是：" + length.ToString() + "米" + "\n");
         }
 
