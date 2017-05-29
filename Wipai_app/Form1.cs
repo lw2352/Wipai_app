@@ -99,9 +99,10 @@ namespace Wipai_app
         {
             if (!progressBar1.InvokeRequired)
             {
-                if (msg == null && progressBar1.Value < progressBar1.Maximum)
+                if (msg == null)
                     progressBar1.Value++;
-                else progressBar1.Value = 0;
+                if(progressBar1.Value == progressBar1.Maximum)
+                    progressBar1.Value = 0;
             }
             else
             {
@@ -258,213 +259,221 @@ namespace Wipai_app
             byte[] ID = new byte[4];//设备的ID号
             int intdeviceID = 0;
             string msg = "";
-            Socket clientSocket = (Socket)ar.AsyncState;//此处获取数据大小              
-
-            //获取客户端信息，包括了IP地址、端口
-            string strIP = (clientSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
-            string strPort = (clientSocket.RemoteEndPoint as IPEndPoint).Port.ToString();
-            //test
-            string strAddress = clientSocket.RemoteEndPoint.ToString();
-
-            DataItem dataitem = (DataItem)htClient[strAddress];//取出address对应的dataitem
-
-            //获取接收的数据长度,注意此处的停止接收，后面必须继续接收，否则不会接收数据的
-            int bytesRead = clientSocket.EndReceive(ar);//接收到的数据长度 !!!如果设备掉线，此处会throw错误
-            if (bytesRead > 0 && radioBtnWindowShow.Checked == true)     //打印数据
+            try
             {
-                string str = byteToHexStr(dataitem.SingleBuffer);
-                string strrec = str.Substring(0, bytesRead * 2);
-                
-                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "接收到的数据长度是" + bytesRead.ToString() + "数据是" + strrec + "\n";
-                ShowMsg(msg);
-                Console.WriteLine(msg);
+                Socket clientSocket = (Socket)ar.AsyncState;//此处获取数据大小              
 
-                switch (dataitem.SingleBuffer[2])
+                //获取客户端信息，包括了IP地址、端口
+                string strIP = (clientSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
+                string strPort = (clientSocket.RemoteEndPoint as IPEndPoint).Port.ToString();
+                //test
+                string strAddress = clientSocket.RemoteEndPoint.ToString();
+
+                DataItem dataitem = (DataItem)htClient[strAddress];//取出address对应的dataitem
+
+                //获取接收的数据长度,注意此处的停止接收，后面必须继续接收，否则不会接收数据的
+                int bytesRead = clientSocket.EndReceive(ar);//接收到的数据长度 !!!如果设备掉线，此处会throw错误
+                if (bytesRead > 0 && radioBtnWindowShow.Checked == true)     //打印数据
                 {
-                    case 0x22:
-                        dataitem.CmdStage = 1;
-                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--AD采样结束" + "\n";
-                        Console.WriteLine(msg);
-                        ShowMsg(msg);
-                        break;
+                    string str = byteToHexStr(dataitem.SingleBuffer);
+                    string strrec = str.Substring(0, bytesRead * 2);
 
-                    case 0x25:
-                        if (dataitem.SingleBuffer[9] == 0x55)
-                        {
-                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定GPS采样时间成功" + "\n";
-                        }
-                        else if(dataitem.SingleBuffer[9] == 0x00)
-                        {
-                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--读取GPS采样时间成功" + "\n";
-                        }
-                        Console.WriteLine(msg);
-                        ShowMsg(msg);
-                        break;
+                    msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "接收到的数据长度是" + bytesRead.ToString() + "数据是" + strrec + "\n";
+                    ShowMsg(msg);
+                    Console.WriteLine(msg);
 
-                    case 0x26:
-                        if (dataitem.SingleBuffer[7] == 0x01)
-                        {
-                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定开启时长和关闭时长成功" + "\n";
+                    switch (dataitem.SingleBuffer[2])
+                    {
+                        case 0x22:
+                            dataitem.CmdStage = 1;
+                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--AD采样结束" + "\n";
                             Console.WriteLine(msg);
                             ShowMsg(msg);
-                        }
-                        break;
+                            break;
 
-                    case 0x27:
-                        int[] gpsData = new int[23];
-                        for (int i = 0; i < 23; i++)
-                        {
-                            gpsData[i] = dataitem.SingleBuffer[9 + i];
-                        }
-                        gpsDistance.getGPSData(gpsData, out dataitem.Latitude, out dataitem.Longitude);
-                        break;
-
-                    case 0x29:
-                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定服务器IP成功" + "\n";
-                        Console.WriteLine(msg);
-                        ShowMsg(msg);
-                        break;
-
-                    case 0x30:
-                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定服务器端口号成功" + "\n";
-                        Console.WriteLine(msg);
-                        ShowMsg(msg);
-                        break;
-
-                    case 0x31:
-                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定AP名称成功" + "\n";
-                        Console.WriteLine(msg);
-                        ShowMsg(msg);
-                        break;
-
-                    case 0x32:
-                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定AP密码成功" + "\n";
-                        Console.WriteLine(msg);
-                        ShowMsg(msg);
-                        break;
-
-                    case 0xAA:
-                        if (bytesRead == perPackageLength)
-                        {
-                            if (dataitem.isSendDataToServer == true)
+                        case 0x25:
+                            if (dataitem.SingleBuffer[9] == 0x55)
                             {
-                                dataitem.currentsendbulk++;
+                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定GPS采样时间成功" + "\n";
+                            }
+                            else if (dataitem.SingleBuffer[9] == 0x00)
+                            {
+                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--读取GPS采样时间成功" + "\n";
+                            }
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
+                            break;
 
-                                ShowProgressBar(null);
+                        case 0x26:
+                            if (dataitem.SingleBuffer[7] == 0x01)
+                            {
+                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定开启时长和关闭时长成功" + "\n";
+                                Console.WriteLine(msg);
+                                ShowMsg(msg);
+                            }
+                            break;
 
-                                for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                        case 0x27:
+                            int[] gpsData = new int[23];
+                            for (int i = 0; i < 23; i++)
+                            {
+                                gpsData[i] = dataitem.SingleBuffer[9 + i];
+                            }
+                            gpsDistance.getGPSData(gpsData, out dataitem.Latitude, out dataitem.Longitude);
+                            break;
+
+                        case 0x29:
+                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定服务器IP成功" + "\n";
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
+                            break;
+
+                        case 0x30:
+                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定服务器端口号成功" + "\n";
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
+                            break;
+
+                        case 0x31:
+                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定AP名称成功" + "\n";
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
+                            break;
+
+                        case 0x32:
+                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定AP密码成功" + "\n";
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
+                            break;
+
+                        case 0xAA:
+                            if (bytesRead == perPackageLength)
+                            {
+                                if (dataitem.isSendDataToServer == true)
                                 {
-                                    dataitem.byteAllData[dataitem.datalength++] = dataitem.SingleBuffer[i];
+                                    dataitem.currentsendbulk++;
+
+                                    ShowProgressBar(null);
+
+                                    for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                                    {
+                                        dataitem.byteAllData[dataitem.datalength++] = dataitem.SingleBuffer[i];
+                                    }
+
+                                    if (dataitem.datalength == g_datafulllength)//1000*600 = 600000;
+                                    {
+                                        StoreDataToFile(dataitem.intDeviceID, dataitem.byteAllData);
+
+                                        dataitem.currentsendbulk = 0;
+                                        dataitem.isSendDataToServer = false;
+                                        dataitem.CmdStage = 3;
+
+                                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--数据上传完毕" + "\n";
+                                        Console.WriteLine(msg);
+                                        ShowMsg(msg);
+                                    }
                                 }
-
-                                if (dataitem.datalength == g_datafulllength)//1000*600 = 600000;
+                                else
                                 {
-                                    StoreDataToFile(dataitem.intDeviceID, dataitem.byteAllData);
-
-                                    dataitem.currentsendbulk = 0;
-                                    dataitem.isSendDataToServer = false;
-                                    dataitem.CmdStage = 3;
-
-                                    msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--数据上传完毕" + "\n";
+                                    for (int i = 368, j = 0; i <= 373; i++, j++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                                    {
+                                        dataitem.byteTimeStamp[j] = (byte)(Convert.ToInt32(dataitem.SingleBuffer[i]) - 0x30);
+                                    }
+                                    msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + dataitem.strAddress + "设备号--" + dataitem.intDeviceID + "--时间戳是:" + byteToHexStr(dataitem.byteTimeStamp) + "\n";
                                     Console.WriteLine(msg);
                                     ShowMsg(msg);
                                 }
                             }
-                            else
+                            break;
+
+                        case 0xFF:
+                            if (dataitem.intDeviceID == 0)//只判断新地址的心跳包，避免重复检测
                             {
-                                for (int i = 368, j = 0; i <= 373; i++, j++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
-                                {
-                                    dataitem.byteTimeStamp[j] = (byte)(Convert.ToInt32(dataitem.SingleBuffer[i]) - 0x30);
+                                //设备的ID字符串
+                                ID[0] = dataitem.SingleBuffer[3];
+                                ID[1] = dataitem.SingleBuffer[4];
+                                ID[2] = dataitem.SingleBuffer[5];
+                                ID[3] = dataitem.SingleBuffer[6];
+                                intdeviceID = byteToInt(ID);
+
+                                string oldAddress = checkIsHaveID(intdeviceID);//得到当前ID对应的旧地址
+
+                                if (oldAddress != null)//若存在，把旧地址的属性复制到新地址上
+                                {//！！！由于掉线，新dataitem属性要继承旧设备，只需要更新网络属性，如IP、port、socket等
+                                    DataItem olddataitem = (DataItem)htClient[oldAddress];//取出当前数据IP对应的dataitem
+
+                                    dataitem.strIP = strIP;
+                                    dataitem.strPort = strPort;
+                                    dataitem.socket = clientSocket;
+                                    dataitem.SingleBuffer = new byte[perPackageLength];
+                                    dataitem.strAddress = strAddress;
+
+                                    dataitem.datalength = olddataitem.datalength;//继承旧属性
+                                    dataitem.byteAllData = olddataitem.byteAllData;//继承旧属性
+                                    dataitem.currentsendbulk = olddataitem.currentsendbulk;//继承旧属性
+
+                                    dataitem.byteDeviceID = ID;
+                                    dataitem.intDeviceID = intdeviceID;
+
+                                    dataitem.isSendDataToServer = olddataitem.isSendDataToServer;//继承旧属性
+                                    dataitem.isChoosed = false;
+                                    dataitem.CmdStage = olddataitem.CmdStage;//继承旧属性
+                                    dataitem.uploadGroup = 0;
+
+                                    dataitem.byteTimeStamp = olddataitem.byteTimeStamp;//时间戳，继承旧属性
+                                    dataitem.Longitude = olddataitem.Longitude;//经度，后半段，继承旧属性
+                                    dataitem.Latitude = olddataitem.Latitude;//纬度， 前半段，继承旧属性
+
+                                    htClient.Remove(oldAddress);//删除旧地址的键值对
+                                    string OldAddress = oldAddress + "--" + dataitem.intDeviceID.ToString();
+                                    RemoveAddress(OldAddress);
+
+                                    htClient[strAddress] = dataitem;//把设备的IP和设备的dataitem对应地更新进哈希表
+                                    string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
+                                    AddAddress(newAddress);
                                 }
-                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + dataitem.strAddress + "设备号--" + dataitem.intDeviceID + "--时间戳是:" + byteToHexStr(dataitem.byteTimeStamp) + "\n";
-                                Console.WriteLine(msg);
-                                ShowMsg(msg);
-                            }
-                        }
-                        break;
+                                else
+                                {
+                                    //若不存在，属于全新地址，更新ID号
+                                    dataitem.intDeviceID = intdeviceID;
+                                    dataitem.byteDeviceID = ID;
 
-                    case 0xFF:
-                        if (dataitem.intDeviceID == 0)//只判断新地址的心跳包，避免重复检测
-                        {
-                            //设备的ID字符串
-                            ID[0] = dataitem.SingleBuffer[3];
-                            ID[1] = dataitem.SingleBuffer[4];
-                            ID[2] = dataitem.SingleBuffer[5];
-                            ID[3] = dataitem.SingleBuffer[6];
-                            intdeviceID = byteToInt(ID);
+                                    string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
+                                    AddAddress(newAddress);
+                                }
+                            }//if (dataitem.intDeviceID == 0)
+                            break;
 
-                            string oldAddress = checkIsHaveID(intdeviceID);//得到当前ID对应的旧地址
+                        default:
+                            break;
+                    }
 
-                            if (oldAddress != null)//若存在，把旧地址的属性复制到新地址上
-                            {//！！！由于掉线，新dataitem属性要继承旧设备，只需要更新网络属性，如IP、port、socket等
-                                DataItem olddataitem = (DataItem)htClient[oldAddress];//取出当前数据IP对应的dataitem
+                    //把数据上传到服务器
+                    if (dataitem.isSendDataToServer == true)
+                    {
 
-                                dataitem.strIP = strIP;
-                                dataitem.strPort = strPort;
-                                dataitem.socket = clientSocket;
-                                dataitem.SingleBuffer = new byte[perPackageLength];
-                                dataitem.strAddress = strAddress;
+                        SendCmdSingle(SetADcmd(dataitem.currentsendbulk), dataitem.byteDeviceID, dataitem.socket);//发送下一包的命令    
 
-                                dataitem.datalength = olddataitem.datalength;//继承旧属性
-                                dataitem.byteAllData = olddataitem.byteAllData;//继承旧属性
-                                dataitem.currentsendbulk = olddataitem.currentsendbulk;//继承旧属性
+                        msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--第" + dataitem.currentsendbulk + "包" + "\n";
+                        ShowMsg(msg);
+                    }
 
-                                dataitem.byteDeviceID = ID;
-                                dataitem.intDeviceID = intdeviceID;
+                    clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
 
-                                dataitem.isSendDataToServer = olddataitem.isSendDataToServer;//继承旧属性
-                                dataitem.isChoosed = false;
-                                dataitem.CmdStage = olddataitem.CmdStage;//继承旧属性
-                                dataitem.uploadGroup = 0;
-
-                                dataitem.byteTimeStamp = olddataitem.byteTimeStamp;//时间戳，继承旧属性
-                                dataitem.Longitude = olddataitem.Longitude;//经度，后半段，继承旧属性
-                                dataitem.Latitude = olddataitem.Latitude;//纬度， 前半段，继承旧属性
-
-                                htClient.Remove(oldAddress);//删除旧地址的键值对
-                                string OldAddress = oldAddress + "--" + dataitem.intDeviceID.ToString();
-                                RemoveAddress(OldAddress);
-
-                                htClient[strAddress] = dataitem;//把设备的IP和设备的dataitem对应地更新进哈希表
-                                string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
-                                AddAddress(newAddress);
-                            }
-                            else
-                            {
-                                //若不存在，属于全新地址，更新ID号
-                                dataitem.intDeviceID = intdeviceID;
-                                dataitem.byteDeviceID = ID;
-
-                                string newAddress = strAddress + "--" + dataitem.intDeviceID.ToString();
-                                AddAddress(newAddress);
-                            }
-                        }//if (dataitem.intDeviceID == 0)
-                        break;
-
-                    default:
-                        break;
                 }
-
-                //把数据上传到服务器
-                if (dataitem.isSendDataToServer == true)
+                else if (bytesRead == 0)//设备自己关闭socket
                 {
-
-                    SendCmdSingle(SetADcmd(dataitem.currentsendbulk), dataitem.byteDeviceID, dataitem.socket);//发送下一包的命令    
-
-                    msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "从硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--第" + dataitem.currentsendbulk + "包" + "\n";
+                    //clientSocket.Shutdown(SocketShutdown.Both);
+                    //clientSocket.Close();
+                    msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "设备--" + dataitem.intDeviceID + "--设备自己关闭socket";
                     ShowMsg(msg);
                 }
 
-
-                clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
-
+                //clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
             }
-            else if (bytesRead == 0)//设备自己关闭socket
+            catch (Exception ex)
             {
-                clientSocket.Shutdown(SocketShutdown.Both);
-                clientSocket.Close();
-                System.Diagnostics.Debug.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "设备--" + dataitem.intDeviceID + "--设备自己关闭socket");
-
+                Console.WriteLine(ex);
             }
 
         }
