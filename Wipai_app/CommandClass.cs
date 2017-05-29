@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Wipai_app
 {
-    class CommandClass
+    class CmdItem
     {
         //(数据位用0xFF填充)
         //上传AD数据包--0x23
