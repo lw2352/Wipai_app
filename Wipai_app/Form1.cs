@@ -295,13 +295,10 @@ namespace Wipai_app
                             if (dataitem.SingleBuffer[9] == 0x55)
                             {
                                 msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定GPS采样时间成功" + "\n";
+                                Console.WriteLine(msg);
+                                ShowMsg(msg);
                             }
-                            else if (dataitem.SingleBuffer[9] == 0x00)
-                            {
-                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--读取GPS采样时间成功" + "\n";
-                            }
-                            Console.WriteLine(msg);
-                            ShowMsg(msg);
+                            
                             break;
 
                         case 0x26:
@@ -320,6 +317,9 @@ namespace Wipai_app
                                 gpsData[i] = dataitem.SingleBuffer[9 + i];
                             }
                             gpsDistance.getGPSData(gpsData, out dataitem.Latitude, out dataitem.Longitude);
+                            msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--经度为："+ dataitem.Longitude + "纬度为：" + dataitem.Latitude + "\n";
+                            Console.WriteLine(msg);
+                            ShowMsg(msg);
                             break;
 
                         case 0x29:
