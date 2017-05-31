@@ -458,7 +458,7 @@ namespace Wipai_app
                         ShowMsg(msg);
                     }
 
-                    clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
+                    //clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
 
                 }
                 else if (bytesRead == 0)//设备自己关闭socket
@@ -469,7 +469,7 @@ namespace Wipai_app
                     ShowMsg(msg);
                 }
 
-                //clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
+                clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
             }
             catch (Exception ex)
             {
