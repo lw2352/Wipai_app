@@ -35,5 +35,5 @@ namespace Wipai_app
         public double Longitude;//经度，后半段
         public double Latitude;//纬度， 前半段
     }
-   
+
 }

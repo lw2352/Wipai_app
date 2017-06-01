@@ -68,9 +68,8 @@
             this.IDBox = new System.Windows.Forms.TextBox();
             this.BtnSendCmd = new System.Windows.Forms.Button();
             this.BtnGetData = new System.Windows.Forms.Button();
-            this.radioBtnWindowShow = new System.Windows.Forms.RadioButton();
-            this.radioBtnSaveFile = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Btn_Test = new System.Windows.Forms.Button();
             this.btn_GetTimeStamp = new System.Windows.Forms.Button();
             this.btn_GetDistance = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -95,6 +94,10 @@
             this.PortextBox = new System.Windows.Forms.TextBox();
             this.BtnSetIPname = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ReadServerPort = new System.Windows.Forms.Button();
+            this.ReadServerIP = new System.Windows.Forms.Button();
+            this.ReadAPPassword = new System.Windows.Forms.Button();
+            this.ReadAPName = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.textBoxCloseTime = new System.Windows.Forms.TextBox();
@@ -108,10 +111,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.IPtextBox3 = new System.Windows.Forms.TextBox();
             this.IPtextBox2 = new System.Windows.Forms.TextBox();
-            this.ReadAPName = new System.Windows.Forms.Button();
-            this.ReadAPPassword = new System.Windows.Forms.Button();
-            this.ReadServerIP = new System.Windows.Forms.Button();
-            this.ReadServerPort = new System.Windows.Forms.Button();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -508,7 +507,7 @@
             // BtnGetData
             // 
             this.BtnGetData.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.BtnGetData.Location = new System.Drawing.Point(204, 101);
+            this.BtnGetData.Location = new System.Drawing.Point(227, 101);
             this.BtnGetData.Name = "BtnGetData";
             this.BtnGetData.Size = new System.Drawing.Size(72, 60);
             this.BtnGetData.TabIndex = 9;
@@ -516,38 +515,12 @@
             this.BtnGetData.UseVisualStyleBackColor = true;
             this.BtnGetData.Click += new System.EventHandler(this.BtnGetData_Click);
             // 
-            // radioBtnWindowShow
-            // 
-            this.radioBtnWindowShow.AutoSize = true;
-            this.radioBtnWindowShow.Checked = true;
-            this.radioBtnWindowShow.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.radioBtnWindowShow.Location = new System.Drawing.Point(109, 103);
-            this.radioBtnWindowShow.Name = "radioBtnWindowShow";
-            this.radioBtnWindowShow.Size = new System.Drawing.Size(71, 16);
-            this.radioBtnWindowShow.TabIndex = 10;
-            this.radioBtnWindowShow.TabStop = true;
-            this.radioBtnWindowShow.Text = "窗口显示";
-            this.radioBtnWindowShow.UseVisualStyleBackColor = true;
-            // 
-            // radioBtnSaveFile
-            // 
-            this.radioBtnSaveFile.AutoSize = true;
-            this.radioBtnSaveFile.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.radioBtnSaveFile.Location = new System.Drawing.Point(109, 140);
-            this.radioBtnSaveFile.Name = "radioBtnSaveFile";
-            this.radioBtnSaveFile.Size = new System.Drawing.Size(83, 16);
-            this.radioBtnSaveFile.TabIndex = 11;
-            this.radioBtnSaveFile.TabStop = true;
-            this.radioBtnSaveFile.Text = "保存到文件";
-            this.radioBtnSaveFile.UseVisualStyleBackColor = true;
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.Btn_Test);
             this.groupBox2.Controls.Add(this.btn_GetTimeStamp);
             this.groupBox2.Controls.Add(this.btn_GetDistance);
             this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Controls.Add(this.radioBtnSaveFile);
-            this.groupBox2.Controls.Add(this.radioBtnWindowShow);
             this.groupBox2.Controls.Add(this.BtnGetData);
             this.groupBox2.Controls.Add(this.BtnSendCmd);
             this.groupBox2.Controls.Add(this.IDBox);
@@ -560,6 +533,16 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "功能操作";
+            // 
+            // Btn_Test
+            // 
+            this.Btn_Test.Location = new System.Drawing.Point(157, 101);
+            this.Btn_Test.Name = "Btn_Test";
+            this.Btn_Test.Size = new System.Drawing.Size(64, 60);
+            this.Btn_Test.TabIndex = 46;
+            this.Btn_Test.Text = "直接采样";
+            this.Btn_Test.UseVisualStyleBackColor = true;
+            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
             // btn_GetTimeStamp
             // 
@@ -585,9 +568,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(299, 103);
+            this.button1.Location = new System.Drawing.Point(305, 103);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 58);
+            this.button1.Size = new System.Drawing.Size(69, 58);
             this.button1.TabIndex = 12;
             this.button1.Text = "上传数据";
             this.button1.UseVisualStyleBackColor = true;
@@ -819,6 +802,50 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "采样设置";
             // 
+            // ReadServerPort
+            // 
+            this.ReadServerPort.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadServerPort.Location = new System.Drawing.Point(372, 143);
+            this.ReadServerPort.Name = "ReadServerPort";
+            this.ReadServerPort.Size = new System.Drawing.Size(38, 23);
+            this.ReadServerPort.TabIndex = 47;
+            this.ReadServerPort.Text = "读取";
+            this.ReadServerPort.UseVisualStyleBackColor = true;
+            this.ReadServerPort.Click += new System.EventHandler(this.ReadServerPort_Click);
+            // 
+            // ReadServerIP
+            // 
+            this.ReadServerIP.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadServerIP.Location = new System.Drawing.Point(372, 116);
+            this.ReadServerIP.Name = "ReadServerIP";
+            this.ReadServerIP.Size = new System.Drawing.Size(38, 23);
+            this.ReadServerIP.TabIndex = 46;
+            this.ReadServerIP.Text = "读取";
+            this.ReadServerIP.UseVisualStyleBackColor = true;
+            this.ReadServerIP.Click += new System.EventHandler(this.ReadServerIP_Click);
+            // 
+            // ReadAPPassword
+            // 
+            this.ReadAPPassword.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadAPPassword.Location = new System.Drawing.Point(209, 89);
+            this.ReadAPPassword.Name = "ReadAPPassword";
+            this.ReadAPPassword.Size = new System.Drawing.Size(38, 23);
+            this.ReadAPPassword.TabIndex = 45;
+            this.ReadAPPassword.Text = "读取";
+            this.ReadAPPassword.UseVisualStyleBackColor = true;
+            this.ReadAPPassword.Click += new System.EventHandler(this.ReadAPPassword_Click);
+            // 
+            // ReadAPName
+            // 
+            this.ReadAPName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ReadAPName.Location = new System.Drawing.Point(209, 63);
+            this.ReadAPName.Name = "ReadAPName";
+            this.ReadAPName.Size = new System.Drawing.Size(38, 23);
+            this.ReadAPName.TabIndex = 44;
+            this.ReadAPName.Text = "读取";
+            this.ReadAPName.UseVisualStyleBackColor = true;
+            this.ReadAPName.Click += new System.EventHandler(this.ReadAPName_Click);
+            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -935,50 +962,6 @@
             this.IPtextBox2.Size = new System.Drawing.Size(36, 21);
             this.IPtextBox2.TabIndex = 22;
             // 
-            // ReadAPName
-            // 
-            this.ReadAPName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.ReadAPName.Location = new System.Drawing.Point(209, 63);
-            this.ReadAPName.Name = "ReadAPName";
-            this.ReadAPName.Size = new System.Drawing.Size(38, 23);
-            this.ReadAPName.TabIndex = 44;
-            this.ReadAPName.Text = "读取";
-            this.ReadAPName.UseVisualStyleBackColor = true;
-            this.ReadAPName.Click += new System.EventHandler(this.ReadAPName_Click);
-            // 
-            // ReadAPPassword
-            // 
-            this.ReadAPPassword.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.ReadAPPassword.Location = new System.Drawing.Point(209, 89);
-            this.ReadAPPassword.Name = "ReadAPPassword";
-            this.ReadAPPassword.Size = new System.Drawing.Size(38, 23);
-            this.ReadAPPassword.TabIndex = 45;
-            this.ReadAPPassword.Text = "读取";
-            this.ReadAPPassword.UseVisualStyleBackColor = true;
-            this.ReadAPPassword.Click += new System.EventHandler(this.ReadAPPassword_Click);
-            // 
-            // ReadServerIP
-            // 
-            this.ReadServerIP.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.ReadServerIP.Location = new System.Drawing.Point(372, 116);
-            this.ReadServerIP.Name = "ReadServerIP";
-            this.ReadServerIP.Size = new System.Drawing.Size(38, 23);
-            this.ReadServerIP.TabIndex = 46;
-            this.ReadServerIP.Text = "读取";
-            this.ReadServerIP.UseVisualStyleBackColor = true;
-            this.ReadServerIP.Click += new System.EventHandler(this.ReadServerIP_Click);
-            // 
-            // ReadServerPort
-            // 
-            this.ReadServerPort.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.ReadServerPort.Location = new System.Drawing.Point(372, 143);
-            this.ReadServerPort.Name = "ReadServerPort";
-            this.ReadServerPort.Size = new System.Drawing.Size(38, 23);
-            this.ReadServerPort.TabIndex = 47;
-            this.ReadServerPort.Text = "读取";
-            this.ReadServerPort.UseVisualStyleBackColor = true;
-            this.ReadServerPort.Click += new System.EventHandler(this.ReadServerPort_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1035,8 +1018,6 @@
         private System.Windows.Forms.TextBox IDBox;
         private System.Windows.Forms.Button BtnSendCmd;
         private System.Windows.Forms.Button BtnGetData;
-        private System.Windows.Forms.RadioButton radioBtnWindowShow;
-        private System.Windows.Forms.RadioButton radioBtnSaveFile;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
@@ -1096,6 +1077,7 @@
         private System.Windows.Forms.Button ReadServerIP;
         private System.Windows.Forms.Button ReadAPPassword;
         private System.Windows.Forms.Button ReadAPName;
+        private System.Windows.Forms.Button Btn_Test;
     }
 }
 
