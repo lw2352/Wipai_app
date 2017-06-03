@@ -15,8 +15,6 @@ using System.Timers;
 
 
 //TODO：如果判断Data文件夹不存在，则创建
-//模块打包分类
-//switch处理收到的数据
 
 
 namespace Wipai_app
@@ -426,8 +424,9 @@ namespace Wipai_app
                 }
                 else if (bytesRead == 0)//设备自己关闭socket
                 {
-                    //clientSocket.Shutdown(SocketShutdown.Both);
-                    //clientSocket.Close();
+                    //必须关闭,因为断开后socket不会立即关闭,会无限循环卡死
+                    clientSocket.Shutdown(SocketShutdown.Both);
+                    clientSocket.Close();
                     msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "设备--" + dataitem.intDeviceID + "--设备自己关闭socket";
                     ShowMsg(msg);
                 }
