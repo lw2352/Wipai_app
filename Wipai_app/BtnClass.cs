@@ -161,6 +161,7 @@ namespace Wipai_app
         private void BtnSetCaptime_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetCapTime;
+            Cmd[7] = 0x01;
             Cmd[9] = Convert.ToByte(HourBox.Text);
             Cmd[10] = Convert.ToByte(MinuteBox.Text);
             Cmd[11] = Convert.ToByte(SecondBox.Text);
@@ -171,6 +172,7 @@ namespace Wipai_app
         private void BtnSetAPName_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetAPssid;
+            Cmd[7] = 0x01;
             byte[] SetAPName = strToByte(APnameBox.Text);//转换成字符型
             for (int i = 0, j = 9; i < SetAPName.Length; i++)
             {
@@ -182,6 +184,7 @@ namespace Wipai_app
         private void BtnSetAPpassword_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetAPpassword;
+            Cmd[7] = 0x01;
             byte[] SetAPpassword = strToByte(APpasswordBox.Text);
             for (int i = 0, j = 9; i < SetAPpassword.Length; i++)
             {
@@ -198,6 +201,7 @@ namespace Wipai_app
             byte[] SetIPname3 = strToByte(IPtextBox3.Text);
             byte[] SetIPname4 = strToByte(IPtextBox4.Text);
             byte[] Cmd = cmdItem.CmdSetServerIP;
+            Cmd[7] = 0x01;
             for (int i = 0, j = 9; i < SetIPname1.Length; i++)
             {
                 Cmd[j++] = SetIPname1[i];
@@ -226,6 +230,7 @@ namespace Wipai_app
         private void BtnSetPort_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetServerPort;
+            Cmd[7] = 0x01;
             byte[] SetPort = strToByte(PortextBox.Text);
             for (int i = 0, j = 9; i < SetPort.Length; i++)
             {
@@ -288,10 +293,11 @@ namespace Wipai_app
         }
 
         
-
+        //设置开始和关闭时长
         private void BtnSetOpenAndCloseTime_Click_1(object sender, EventArgs e)
         {
             byte[] CmdSetOpenAndCloseTime = cmdItem.CmdSetOpenAndCloseTime;//设置开启时长
+            CmdSetOpenAndCloseTime[7] = 0x01;
             int OpenTime = 2 * Convert.ToInt32(textBoxOpenTime.Text);
             int CloseTime = 2 * Convert.ToInt32(textBoxCloseTime.Text);
             CmdSetOpenAndCloseTime[9] = (byte)(OpenTime >> 8);
