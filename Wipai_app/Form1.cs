@@ -14,7 +14,8 @@ using System.Timers;
 //[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 
-//TODO：如果判断Data文件夹不存在，则创建
+//TODO：1. ！！！上传的数据存在错误，旧版本（if-if）正常，对比测试 。
+//2.如果判断Data文件夹不存在，则创建
 
 
 namespace Wipai_app
