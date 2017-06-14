@@ -69,7 +69,6 @@
             this.BtnSendCmd = new System.Windows.Forms.Button();
             this.BtnGetData = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.Btn_Test = new System.Windows.Forms.Button();
             this.btn_GetTimeStamp = new System.Windows.Forms.Button();
             this.btn_GetDistance = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -94,6 +93,7 @@
             this.PortextBox = new System.Windows.Forms.TextBox();
             this.BtnSetIPname = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Btn_reconnectTcp = new System.Windows.Forms.Button();
             this.ReadServerPort = new System.Windows.Forms.Button();
             this.ReadServerIP = new System.Windows.Forms.Button();
             this.ReadAPPassword = new System.Windows.Forms.Button();
@@ -517,7 +517,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.Btn_Test);
             this.groupBox2.Controls.Add(this.btn_GetTimeStamp);
             this.groupBox2.Controls.Add(this.btn_GetDistance);
             this.groupBox2.Controls.Add(this.button1);
@@ -533,16 +532,6 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "功能操作";
-            // 
-            // Btn_Test
-            // 
-            this.Btn_Test.Location = new System.Drawing.Point(157, 101);
-            this.Btn_Test.Name = "Btn_Test";
-            this.Btn_Test.Size = new System.Drawing.Size(64, 60);
-            this.Btn_Test.TabIndex = 46;
-            this.Btn_Test.Text = "直接采样";
-            this.Btn_Test.UseVisualStyleBackColor = true;
-            this.Btn_Test.Click += new System.EventHandler(this.Btn_Test_Click);
             // 
             // btn_GetTimeStamp
             // 
@@ -758,6 +747,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.Btn_reconnectTcp);
             this.groupBox3.Controls.Add(this.ReadServerPort);
             this.groupBox3.Controls.Add(this.ReadServerIP);
             this.groupBox3.Controls.Add(this.ReadAPPassword);
@@ -801,6 +791,16 @@
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "采样设置";
+            // 
+            // Btn_reconnectTcp
+            // 
+            this.Btn_reconnectTcp.Location = new System.Drawing.Point(416, 115);
+            this.Btn_reconnectTcp.Name = "Btn_reconnectTcp";
+            this.Btn_reconnectTcp.Size = new System.Drawing.Size(69, 51);
+            this.Btn_reconnectTcp.TabIndex = 48;
+            this.Btn_reconnectTcp.Text = "重新联网";
+            this.Btn_reconnectTcp.UseVisualStyleBackColor = true;
+            this.Btn_reconnectTcp.Click += new System.EventHandler(this.Btn_reconnectTcp_Click);
             // 
             // ReadServerPort
             // 
@@ -1077,7 +1077,7 @@
         private System.Windows.Forms.Button ReadServerIP;
         private System.Windows.Forms.Button ReadAPPassword;
         private System.Windows.Forms.Button ReadAPName;
-        private System.Windows.Forms.Button Btn_Test;
+        private System.Windows.Forms.Button Btn_reconnectTcp;
     }
 }
 

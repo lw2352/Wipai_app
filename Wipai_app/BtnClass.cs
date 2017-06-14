@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
@@ -195,47 +194,28 @@ namespace Wipai_app
         //设置服务端IP地址
         private void BtnSetIPnameAndPort_Click(object sender, EventArgs e)
         {
-
-            byte[] SetIPname1 = strToByte(IPtextBox1.Text);
-            byte[] SetIPname2 = strToByte(IPtextBox2.Text);
-            byte[] SetIPname3 = strToByte(IPtextBox3.Text);
-            byte[] SetIPname4 = strToByte(IPtextBox4.Text);
             byte[] Cmd = cmdItem.CmdSetServerIP;
             Cmd[7] = 0x01;
-            for (int i = 0, j = 9; i < SetIPname1.Length; i++)
-            {
-                Cmd[j++] = SetIPname1[i];
-            }
-            Cmd[9 + SetIPname1.Length] = 0x2E;
 
-            for (int i = 0, j = 10 + SetIPname1.Length; i < SetIPname2.Length; i++)
-            {
-                Cmd[j++] = SetIPname2[i];
-            }
-            Cmd[10 + SetIPname1.Length + SetIPname2.Length] = 0x2E;
+            Cmd[9] = Convert.ToByte(IPtextBox1.Text);
+            Cmd[10] = Convert.ToByte(IPtextBox2.Text);
+            Cmd[11] = Convert.ToByte(IPtextBox3.Text);
+            Cmd[12] = Convert.ToByte(IPtextBox4.Text);
 
-            for (int i = 0, j = 11 + SetIPname1.Length + SetIPname2.Length; i < SetIPname3.Length; i++)
-            {
-                Cmd[j++] = SetIPname3[i];
-            }
-            Cmd[11 + SetIPname1.Length + SetIPname2.Length + SetIPname3.Length] = 0x2E;
-
-            for (int i = 0, j = 12 + SetIPname1.Length + SetIPname2.Length + SetIPname3.Length; i < SetIPname4.Length; i++)
-            {
-                Cmd[j++] = SetIPname4[i];
-            }
             SendCmdAll(Cmd);
         }
         //设置Port
         private void BtnSetPort_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetServerPort;
+            byte[] bytePort = new byte[2];
             Cmd[7] = 0x01;
-            byte[] SetPort = strToByte(PortextBox.Text);
-            for (int i = 0, j = 9; i < SetPort.Length; i++)
-            {
-                Cmd[j++] = SetPort[i];
-            }
+
+            int port = Convert.ToInt32(PortextBox.Text);
+            bytePort = intToBytes(port);
+            Cmd[9] = bytePort[0];
+            Cmd[10] = bytePort[1];
+
             SendCmdAll(Cmd);
         }
 
@@ -413,11 +393,11 @@ namespace Wipai_app
             SendCmdAll(CmdReadServerPort);
         }
 
-
-        private void Btn_Test_Click(object sender, EventArgs e)
+        //设定完网络参数后，让esp8266重新联网
+        private void Btn_reconnectTcp_Click(object sender, EventArgs e)
         {
-            byte[] Testcmd = { 0xA5, 0xA5, 0x22, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0xFF, 0xFF, 0x5A, 0x5A };
-            SendCmdAll(Testcmd);
+            byte[] CmdReconnectTcp = cmdItem.CmdReconnectTcp;
+            SendCmdAll(CmdReconnectTcp);
         }
     }
 }

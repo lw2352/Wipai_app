@@ -25,12 +25,12 @@ namespace Wipai_app
     {
         private string IP;//服务端的IP地址
         private int Port; //服务器端口地址
-        private int perPackageLength = 1008;//每包的长度                                          
+        private int perPackageLength = 1009;//每包的长度                                          
         private static int g_datafulllength = 600000; //完整数据包的一个长度
         private static int g_totalPackageCount = 600; //600个包
         Hashtable htClient = new Hashtable(); //创建一个Hashtable实例，保存所有设备信息，key存储是ID，value是DataItem;
         Socket ServerSocket; //The main socket on which the server listens to the clients
-        private static int currentUploadGroup = 0;//当前第几组上传
+        //private static int currentUploadGroup = 0;//当前第几组上传
         //public static log4net.ILog DebugLog = log4net.LogManager.GetLogger(typeof(Form1));
 
         private delegate void ShowMsgHandler(string msg);
@@ -308,7 +308,7 @@ namespace Wipai_app
                             ShowMsg(msg);
                             break;
 
-                        case 0xAA:
+                        case 0x23:
                             if (bytesRead == perPackageLength)
                             {
                                 if (dataitem.isSendDataToServer == true)
@@ -317,7 +317,7 @@ namespace Wipai_app
 
                                     ShowProgressBar(null);
 
-                                    for (int i = 7; i < perPackageLength - 1; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                                    for (int i = 7; i < perPackageLength - 2; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
                                     {
                                         dataitem.byteAllData[dataitem.datalength++] = dataitem.SingleBuffer[i];
                                     }
@@ -615,7 +615,7 @@ namespace Wipai_app
             Cmd[11] = bytesbulkCount[0];
             Cmd[12] = bytesbulkCount[1];
             
-            if (Cmd[11] == 0x00 && Cmd[12] == 0x3A)
+            /*if (Cmd[11] == 0x00 && Cmd[12] == 0x3A)
             {
                 Cmd[11] = 0x03;
                 Cmd[12] = 0x0A;
@@ -629,7 +629,7 @@ namespace Wipai_app
             {
                 Cmd[11] = 0x23;
                 Cmd[12] = 0x0A;
-            }
+            }*/
             string strtest = byteToHexStr(Cmd);
             return (Cmd);
         }
@@ -648,7 +648,8 @@ namespace Wipai_app
             F.Close();
             ShowMsg("文件保存成功");
         }
-       
+
+        
     }//对应public partial class Form1 : Form
 
 }//对应namespace Wipai_app
