@@ -14,8 +14,8 @@ using System.Timers;
 //[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 
-//TODO：1. ！！！上传的数据存在错误，旧版本（if-if）正常，对比测试 。
-//2.如果判断Data文件夹不存在，则创建
+//TODO
+
 
 
 namespace Wipai_app
@@ -615,21 +615,6 @@ namespace Wipai_app
             Cmd[11] = bytesbulkCount[0];
             Cmd[12] = bytesbulkCount[1];
             
-            /*if (Cmd[11] == 0x00 && Cmd[12] == 0x3A)
-            {
-                Cmd[11] = 0x03;
-                Cmd[12] = 0x0A;
-            }
-            else if (Cmd[11] == 0x01 && Cmd[12] == 0x3A)
-            {
-                Cmd[11] = 0x13;
-                Cmd[12] = 0x0A;
-            }
-            else if (Cmd[11] == 0x02 && Cmd[12] == 0x3A)
-            {
-                Cmd[11] = 0x23;
-                Cmd[12] = 0x0A;
-            }*/
             string strtest = byteToHexStr(Cmd);
             return (Cmd);
         }
@@ -639,14 +624,32 @@ namespace Wipai_app
         {
             string filename = DateTime.Now.ToString("yyyy-MM-dd") + "--" + DateTime.Now.Hour.ToString() + "-" + DateTime.Now.Minute.ToString() + "-" + DateTime.Now.Second.ToString() + "--" + intDeviceID.ToString();//以日期时间命名，避免文件名重复
             byte[] fileStartAndEnd = new byte[2] { 0xAA, 0x55 };//保存文件的头是AA，尾是55
-            string path = @"D:\\Data\\" + filename + ".dat";
-            FileStream F = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            F.Write(fileStartAndEnd, 0, 1);
-            F.Write(bytes, 0, bytes.Length);
-            F.Write(fileStartAndEnd, 1, 1);
-            F.Flush();
-            F.Close();
-            ShowMsg("文件保存成功");
+            string url = "D:\\Data";
+
+            if (!Directory.Exists(url))//如果不存在就创建file文件夹　　             　　                
+            {
+                Directory.CreateDirectory(url);//创建该文件夹　
+
+                string path = @"D:\\Data\\" + filename + ".dat";
+                FileStream F = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                F.Write(fileStartAndEnd, 0, 1);
+                F.Write(bytes, 0, bytes.Length);
+                F.Write(fileStartAndEnd, 1, 1);
+                F.Flush();
+                F.Close();
+                ShowMsg("文件保存成功");
+            }
+            else
+            {
+                string path = @"D:\\Data\\" + filename + ".dat";
+                FileStream F = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                F.Write(fileStartAndEnd, 0, 1);
+                F.Write(bytes, 0, bytes.Length);
+                F.Write(fileStartAndEnd, 1, 1);
+                F.Flush();
+                F.Close();
+                ShowMsg("文件保存成功");
+            }
         }
 
         
