@@ -30,7 +30,7 @@ namespace Wipai_app
         private static int g_totalPackageCount = 600; //600个包
         Hashtable htClient = new Hashtable(); //创建一个Hashtable实例，保存所有设备信息，key存储是ID，value是DataItem;
         Socket ServerSocket; //The main socket on which the server listens to the clients
-        //private static int currentUploadGroup = 0;//当前第几组上传
+        private static int currentUploadGroup = 0;//当前第几组上传
         //public static log4net.ILog DebugLog = log4net.LogManager.GetLogger(typeof(Form1));
 
         private delegate void ShowMsgHandler(string msg);
@@ -120,6 +120,7 @@ namespace Wipai_app
             CmdBox.Items.Add("读取开启和关闭时长");
             CmdBox.Items.Add("读取经纬度");
             CmdBox.Items.Add("读取GPS采样时间");
+            CmdBox.Items.Add("读取当前开启和关闭时长");
 
             BtnOpenServer.Enabled = true;
             BtnCloseServer.Enabled = false;
@@ -239,6 +240,21 @@ namespace Wipai_app
 
                     switch (dataitem.SingleBuffer[2])
                     {
+                        case 0x21:
+                            if (dataitem.SingleBuffer[7] == 0x00)
+                            {
+                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--读取开启时长和关闭时长成功" + "\n";
+                                Console.WriteLine(msg);
+                                ShowMsg(msg);
+                            }
+                            if (dataitem.SingleBuffer[7] == 0x01)
+                            {
+                                msg = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "硬件" + strAddress + "设备号--" + dataitem.intDeviceID + "--设定开启时长和关闭时长成功" + "\n";
+                                Console.WriteLine(msg);
+                                ShowMsg(msg);
+                            }
+                            break;
+
                         case 0x22:
                             if (dataitem.SingleBuffer[9] == 0xAA)
                             {
@@ -420,7 +436,26 @@ namespace Wipai_app
                         ShowMsg(msg);
                     }
 
-                    //clientSocket.BeginReceive(dataitem.SingleBuffer, 0, dataitem.SingleBuffer.Length, SocketFlags.None, new AsyncCallback(OnReceive), clientSocket);
+                    //选择是否自动测试
+                    if (checkBoxAutoTest.Checked)
+                    {
+                        if (checkIsAllCmdStage1())//所有设备采样完成，关闭定时器，可以进行上传了
+                        {
+                           UploadADdataByGroup(currentUploadGroup);//在UploadADdataByGroup函数中将stage置2
+                        }
+
+                        if (checkIsAllCmdStage3())
+                        {
+                            foreach (DictionaryEntry de in htClient)
+                            {
+                                DataItem dataitem1 = (DataItem)de.Value;
+                                if (dataitem1.CmdStage == 3)//add 5-13
+                                    dataitem.CmdStage = 0;
+                            }
+                            ShowMsg("所有设备数据传完,CmdStage置0；设置当前组的采样时间\n");
+                            SetCapTimeByGroup(5, currentUploadGroup);
+                        }
+                    }
 
                 }
                 else if (bytesRead == 0)//设备自己关闭socket
@@ -440,6 +475,86 @@ namespace Wipai_app
             }
 
         }
+
+        #region 自动测试
+        //检查所有设备处于第几命令阶段--stage1--除上传外的命令已发完，可以进行上传了
+        private bool checkIsAllCmdStage1()
+        {
+            //此处进行遍历操作
+            foreach (DictionaryEntry de in htClient)
+            {
+                DataItem dataitem = (DataItem)de.Value;
+                if (dataitem.CmdStage != 1 && dataitem.intDeviceID != 0)//add 5-9
+                    return false;
+            }
+            return true;
+        }
+
+
+        //检查所有设备处于第几命令阶段--stage3--所有命令发完，可以进行数据分析了
+        private bool checkIsAllCmdStage3()
+        {
+            //此处进行遍历操作
+            foreach (DictionaryEntry de in htClient)
+            {
+                DataItem dataitem = (DataItem)de.Value;
+                if (dataitem.CmdStage != 3 && dataitem.intDeviceID != 0)//add 5-9
+                    return false;
+            }
+            return true;
+        }
+
+        //向一组设备发送上传命令
+        private void UploadADdataByGroup(int group)
+        {
+            //此处进行遍历操作
+            foreach (DictionaryEntry de in htClient)
+            {
+                DataItem dataitem = (DataItem)de.Value;
+                if (dataitem.uploadGroup == group && dataitem.intDeviceID != 0)
+                {
+                    dataitem.isSendDataToServer = true;
+                    dataitem.datalength = 0;
+                    dataitem.currentsendbulk = 0;
+                    dataitem.CmdStage = 2;//stage置2，分完组准备上传
+
+                    SendCmdSingle(SetADcmd(0), dataitem.byteDeviceID, dataitem.socket);
+                }
+            }
+        }
+
+        //向一组设备设置采样时间
+        private void SetCapTimeByGroup(int minute, int group)
+        {
+            byte[] cmd = cmdItem.CmdSetCapTime;
+            if (DateTime.Now.Minute + minute <= 59)
+            {
+                cmd[9] = (byte)DateTime.Now.Hour;
+                cmd[10] = (byte)(DateTime.Now.Minute + minute);//当前时刻加5分钟
+            }
+            else
+            { //分钟数大于60
+                cmd[9] = (byte)(DateTime.Now.Hour + 1);
+                cmd[10] = (byte)(DateTime.Now.Minute + minute - 60);
+            }
+            try
+            {//此处进行遍历操作
+                foreach (DictionaryEntry de in htClient)
+                {
+                    DataItem dataitem = (DataItem)de.Value;
+                    if (dataitem.uploadGroup == group && dataitem.intDeviceID != 0)
+                    {
+                        SendCmdSingle(cmd, dataitem.byteDeviceID, dataitem.socket);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// 异步发送数据
@@ -652,7 +767,9 @@ namespace Wipai_app
             }
         }
 
-        
+
+
+
     }//对应public partial class Form1 : Form
 
 }//对应namespace Wipai_app

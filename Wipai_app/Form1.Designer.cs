@@ -93,6 +93,10 @@
             this.PortextBox = new System.Windows.Forms.TextBox();
             this.BtnSetIPname = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonSetCurrentOpenCloseTime = new System.Windows.Forms.Button();
+            this.textBoxCurrentCloseTime = new System.Windows.Forms.TextBox();
+            this.textBoxCurrentOpenTime = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.Btn_reconnectTcp = new System.Windows.Forms.Button();
             this.ReadServerPort = new System.Windows.Forms.Button();
             this.ReadServerIP = new System.Windows.Forms.Button();
@@ -111,6 +115,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.IPtextBox3 = new System.Windows.Forms.TextBox();
             this.IPtextBox2 = new System.Windows.Forms.TextBox();
+            this.checkBoxAutoTest = new System.Windows.Forms.CheckBox();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -517,6 +522,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.checkBoxAutoTest);
             this.groupBox2.Controls.Add(this.btn_GetTimeStamp);
             this.groupBox2.Controls.Add(this.btn_GetDistance);
             this.groupBox2.Controls.Add(this.button1);
@@ -747,6 +753,10 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonSetCurrentOpenCloseTime);
+            this.groupBox3.Controls.Add(this.textBoxCurrentCloseTime);
+            this.groupBox3.Controls.Add(this.textBoxCurrentOpenTime);
+            this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Controls.Add(this.Btn_reconnectTcp);
             this.groupBox3.Controls.Add(this.ReadServerPort);
             this.groupBox3.Controls.Add(this.ReadServerIP);
@@ -791,6 +801,40 @@
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "采样设置";
+            // 
+            // buttonSetCurrentOpenCloseTime
+            // 
+            this.buttonSetCurrentOpenCloseTime.Location = new System.Drawing.Point(443, 57);
+            this.buttonSetCurrentOpenCloseTime.Name = "buttonSetCurrentOpenCloseTime";
+            this.buttonSetCurrentOpenCloseTime.Size = new System.Drawing.Size(42, 23);
+            this.buttonSetCurrentOpenCloseTime.TabIndex = 52;
+            this.buttonSetCurrentOpenCloseTime.Text = "确定";
+            this.buttonSetCurrentOpenCloseTime.UseVisualStyleBackColor = true;
+            this.buttonSetCurrentOpenCloseTime.Click += new System.EventHandler(this.buttonSetCurrentOpenCloseTime_Click);
+            // 
+            // textBoxCurrentCloseTime
+            // 
+            this.textBoxCurrentCloseTime.Location = new System.Drawing.Point(433, 33);
+            this.textBoxCurrentCloseTime.Name = "textBoxCurrentCloseTime";
+            this.textBoxCurrentCloseTime.Size = new System.Drawing.Size(46, 21);
+            this.textBoxCurrentCloseTime.TabIndex = 51;
+            // 
+            // textBoxCurrentOpenTime
+            // 
+            this.textBoxCurrentOpenTime.Location = new System.Drawing.Point(381, 33);
+            this.textBoxCurrentOpenTime.Name = "textBoxCurrentOpenTime";
+            this.textBoxCurrentOpenTime.Size = new System.Drawing.Size(46, 21);
+            this.textBoxCurrentOpenTime.TabIndex = 50;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label18.Location = new System.Drawing.Point(348, 17);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(143, 12);
+            this.label18.TabIndex = 49;
+            this.label18.Text = "设置当前开启和关闭时长:";
             // 
             // Btn_reconnectTcp
             // 
@@ -850,7 +894,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label20.Location = new System.Drawing.Point(385, 71);
+            this.label20.Location = new System.Drawing.Point(312, 68);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(53, 12);
             this.label20.TabIndex = 43;
@@ -860,7 +904,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label19.Location = new System.Drawing.Point(333, 71);
+            this.label19.Location = new System.Drawing.Point(260, 68);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(53, 12);
             this.label19.TabIndex = 42;
@@ -868,14 +912,14 @@
             // 
             // textBoxCloseTime
             // 
-            this.textBoxCloseTime.Location = new System.Drawing.Point(387, 88);
+            this.textBoxCloseTime.Location = new System.Drawing.Point(314, 85);
             this.textBoxCloseTime.Name = "textBoxCloseTime";
             this.textBoxCloseTime.Size = new System.Drawing.Size(46, 21);
             this.textBoxCloseTime.TabIndex = 41;
             // 
             // BtnSetOpenAndCloseTime
             // 
-            this.BtnSetOpenAndCloseTime.Location = new System.Drawing.Point(443, 89);
+            this.BtnSetOpenAndCloseTime.Location = new System.Drawing.Point(370, 86);
             this.BtnSetOpenAndCloseTime.Name = "BtnSetOpenAndCloseTime";
             this.BtnSetOpenAndCloseTime.Size = new System.Drawing.Size(42, 23);
             this.BtnSetOpenAndCloseTime.TabIndex = 40;
@@ -885,7 +929,7 @@
             // 
             // textBoxOpenTime
             // 
-            this.textBoxOpenTime.Location = new System.Drawing.Point(335, 88);
+            this.textBoxOpenTime.Location = new System.Drawing.Point(262, 85);
             this.textBoxOpenTime.Name = "textBoxOpenTime";
             this.textBoxOpenTime.Size = new System.Drawing.Size(46, 21);
             this.textBoxOpenTime.TabIndex = 36;
@@ -961,6 +1005,16 @@
             this.IPtextBox2.Name = "IPtextBox2";
             this.IPtextBox2.Size = new System.Drawing.Size(36, 21);
             this.IPtextBox2.TabIndex = 22;
+            // 
+            // checkBoxAutoTest
+            // 
+            this.checkBoxAutoTest.AutoSize = true;
+            this.checkBoxAutoTest.Location = new System.Drawing.Point(109, 108);
+            this.checkBoxAutoTest.Name = "checkBoxAutoTest";
+            this.checkBoxAutoTest.Size = new System.Drawing.Size(72, 16);
+            this.checkBoxAutoTest.TabIndex = 46;
+            this.checkBoxAutoTest.Text = "自动测试";
+            this.checkBoxAutoTest.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1078,6 +1132,11 @@
         private System.Windows.Forms.Button ReadAPPassword;
         private System.Windows.Forms.Button ReadAPName;
         private System.Windows.Forms.Button Btn_reconnectTcp;
+        private System.Windows.Forms.Button buttonSetCurrentOpenCloseTime;
+        private System.Windows.Forms.TextBox textBoxCurrentCloseTime;
+        private System.Windows.Forms.TextBox textBoxCurrentOpenTime;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.CheckBox checkBoxAutoTest;
     }
 }
 

@@ -89,13 +89,11 @@ namespace Wipai_app
         //下拉菜单中的命令
         private void BtnSendCmd_Click(object sender, EventArgs e)
         {
-            byte[] Cmd1 = cmdItem.CmdSetOpenAndCloseTime;//设置开启和关闭时长
-            Cmd1[7] = 0x00;
+            byte[] Cmd1 = cmdItem.CmdReadOpenAndCloseTime;//设置开启和关闭时长
 
             byte[] Cmd2 = cmdItem.CmdReadGPSData;
 
-            byte[] Cmd3 = cmdItem.CmdSetCapTime;
-            Cmd3[7] = 0x00;
+            byte[] Cmd3 = cmdItem.CmdReadCapTime;
 
             switch (this.CmdBox.SelectedIndex)//根据下拉框当前选择的第几行文本来选择指令
             {
@@ -111,6 +109,10 @@ namespace Wipai_app
                 case 2:
                     SendCmdAll(Cmd3);
                     break;
+                case 3:
+                    SendCmdAll(cmdItem.CmdReadCurrentOpenAndCloseTime);
+                    break;
+
                 default:
                     ShowMsg("请选择一条读取指令");
                     break;
@@ -160,7 +162,6 @@ namespace Wipai_app
         private void BtnSetCaptime_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetCapTime;
-            Cmd[7] = 0x01;
             Cmd[9] = Convert.ToByte(HourBox.Text);
             Cmd[10] = Convert.ToByte(MinuteBox.Text);
             Cmd[11] = Convert.ToByte(SecondBox.Text);
@@ -171,7 +172,6 @@ namespace Wipai_app
         private void BtnSetAPName_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetAPssid;
-            Cmd[7] = 0x01;
             byte[] SetAPName = strToByte(APnameBox.Text);//转换成字符型
             for (int i = 0, j = 9; i < SetAPName.Length; i++)
             {
@@ -183,7 +183,6 @@ namespace Wipai_app
         private void BtnSetAPpassword_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetAPpassword;
-            Cmd[7] = 0x01;
             byte[] SetAPpassword = strToByte(APpasswordBox.Text);
             for (int i = 0, j = 9; i < SetAPpassword.Length; i++)
             {
@@ -195,7 +194,6 @@ namespace Wipai_app
         private void BtnSetIPnameAndPort_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetServerIP;
-            Cmd[7] = 0x01;
 
             Cmd[9] = Convert.ToByte(IPtextBox1.Text);
             Cmd[10] = Convert.ToByte(IPtextBox2.Text);
@@ -209,7 +207,6 @@ namespace Wipai_app
         {
             byte[] Cmd = cmdItem.CmdSetServerPort;
             byte[] bytePort = new byte[2];
-            Cmd[7] = 0x01;
 
             int port = Convert.ToInt32(PortextBox.Text);
             bytePort = intToBytes(port);
@@ -277,7 +274,6 @@ namespace Wipai_app
         private void BtnSetOpenAndCloseTime_Click_1(object sender, EventArgs e)
         {
             byte[] CmdSetOpenAndCloseTime = cmdItem.CmdSetOpenAndCloseTime;//设置开启时长
-            CmdSetOpenAndCloseTime[7] = 0x01;
             int OpenTime = 2 * Convert.ToInt32(textBoxOpenTime.Text);
             int CloseTime = 2 * Convert.ToInt32(textBoxCloseTime.Text);
             CmdSetOpenAndCloseTime[9] = (byte)(OpenTime >> 8);
@@ -367,29 +363,25 @@ namespace Wipai_app
 
         private void ReadAPName_Click(object sender, EventArgs e)
         {
-            byte[] CmdReadAPName = cmdItem.CmdSetAPssid;
-            CmdReadAPName[7] = 0x00;
+            byte[] CmdReadAPName = cmdItem.CmdReadAPssid;
             SendCmdAll(CmdReadAPName);
         }
 
         private void ReadAPPassword_Click(object sender, EventArgs e)
         {
-            byte[] CmdReadAPPassword = cmdItem.CmdSetAPpassword;
-            CmdReadAPPassword[7] = 0x00;
+            byte[] CmdReadAPPassword = cmdItem.CmdReadAPpassword;
             SendCmdAll(CmdReadAPPassword);
         }
 
         private void ReadServerIP_Click(object sender, EventArgs e)
         {
-            byte[] CmdReadServerIP = cmdItem.CmdSetServerIP;
-            CmdReadServerIP[7] = 0x00;
+            byte[] CmdReadServerIP = cmdItem.CmdReadServerIP;
             SendCmdAll(CmdReadServerIP);
         }
 
         private void ReadServerPort_Click(object sender, EventArgs e)
         {
-            byte[] CmdReadServerPort = cmdItem.CmdSetServerPort;
-            CmdReadServerPort[7] = 0x00;
+            byte[] CmdReadServerPort = cmdItem.CmdReadServerPort;
             SendCmdAll(CmdReadServerPort);
         }
 
@@ -399,5 +391,18 @@ namespace Wipai_app
             byte[] CmdReconnectTcp = cmdItem.CmdReconnectTcp;
             SendCmdAll(CmdReconnectTcp);
         }
+
+        private void buttonSetCurrentOpenCloseTime_Click(object sender, EventArgs e)
+        {
+            byte[] CmdSetCurrentOpenAndCloseTime = cmdItem.CmdSetCurrentOpenAndCloseTime;//设置开启时长
+            int CurrentOpenTime = 2 * Convert.ToInt32(textBoxCurrentOpenTime.Text);
+            int CurrentCloseTime = 2 * Convert.ToInt32(textBoxCurrentCloseTime.Text);
+            CmdSetCurrentOpenAndCloseTime[9] = (byte)(CurrentOpenTime >> 8);
+            CmdSetCurrentOpenAndCloseTime[10] = (byte)(CurrentOpenTime & 0xFF);
+            CmdSetCurrentOpenAndCloseTime[11] = (byte)(CurrentCloseTime >> 8);
+            CmdSetCurrentOpenAndCloseTime[12] = (byte)(CurrentCloseTime & 0xFF);
+            SendCmdAll(CmdSetCurrentOpenAndCloseTime);
+        }
+
     }
 }
