@@ -217,7 +217,7 @@ namespace Wipai_app
             string msg = "";
             try
             {
-                Socket clientSocket = (Socket)ar.AsyncState;//此处获取数据大小              
+                Socket clientSocket = (Socket)ar.AsyncState;        
 
                 //获取客户端信息，包括了IP地址、端口
                 string strIP = (clientSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
@@ -487,6 +487,7 @@ namespace Wipai_app
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                CloseSocket((Socket)ar.AsyncState);
             }
 
         }
@@ -585,6 +586,7 @@ namespace Wipai_app
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "SGSserverTCP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CloseSocket((Socket)ar.AsyncState);
             }
         }
 
@@ -701,6 +703,7 @@ namespace Wipai_app
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex);
+                        CloseSocket(dataitem.socket);
                     }
                 }
             }
@@ -726,6 +729,7 @@ namespace Wipai_app
             {
                 //DebugLog.Debug(ex);
                 Console.WriteLine(ex);
+                CloseSocket(deviceSocket);
             }
 
 
@@ -782,7 +786,20 @@ namespace Wipai_app
             }
         }
 
-
+        public void CloseSocket(Socket socket)
+        {
+            try
+            {
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
+            }
+            catch (Exception ex)
+            {
+                string error = DateTime.Now.ToString() + "出错信息：" + "---" + ex.Message + "\n";
+                //Log.Debug(error);
+                System.Diagnostics.Debug.WriteLine(error);
+            }
+        }
 
 
     }//对应public partial class Form1 : Form
