@@ -69,6 +69,7 @@
             this.BtnSendCmd = new System.Windows.Forms.Button();
             this.BtnGetData = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBoxAutoTest = new System.Windows.Forms.CheckBox();
             this.btn_GetTimeStamp = new System.Windows.Forms.Button();
             this.btn_GetDistance = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -115,7 +116,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.IPtextBox3 = new System.Windows.Forms.TextBox();
             this.IPtextBox2 = new System.Windows.Forms.TextBox();
-            this.checkBoxAutoTest = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutoUpload = new System.Windows.Forms.CheckBox();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -522,6 +523,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.checkBoxAutoUpload);
             this.groupBox2.Controls.Add(this.checkBoxAutoTest);
             this.groupBox2.Controls.Add(this.btn_GetTimeStamp);
             this.groupBox2.Controls.Add(this.btn_GetDistance);
@@ -538,6 +540,16 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "功能操作";
+            // 
+            // checkBoxAutoTest
+            // 
+            this.checkBoxAutoTest.AutoSize = true;
+            this.checkBoxAutoTest.Location = new System.Drawing.Point(96, 108);
+            this.checkBoxAutoTest.Name = "checkBoxAutoTest";
+            this.checkBoxAutoTest.Size = new System.Drawing.Size(120, 16);
+            this.checkBoxAutoTest.TabIndex = 46;
+            this.checkBoxAutoTest.Text = "自动(采样加上传)";
+            this.checkBoxAutoTest.UseVisualStyleBackColor = true;
             // 
             // btn_GetTimeStamp
             // 
@@ -1006,15 +1018,15 @@
             this.IPtextBox2.Size = new System.Drawing.Size(36, 21);
             this.IPtextBox2.TabIndex = 22;
             // 
-            // checkBoxAutoTest
+            // checkBoxAutoUpload
             // 
-            this.checkBoxAutoTest.AutoSize = true;
-            this.checkBoxAutoTest.Location = new System.Drawing.Point(109, 108);
-            this.checkBoxAutoTest.Name = "checkBoxAutoTest";
-            this.checkBoxAutoTest.Size = new System.Drawing.Size(72, 16);
-            this.checkBoxAutoTest.TabIndex = 46;
-            this.checkBoxAutoTest.Text = "自动测试";
-            this.checkBoxAutoTest.UseVisualStyleBackColor = true;
+            this.checkBoxAutoUpload.AutoSize = true;
+            this.checkBoxAutoUpload.Location = new System.Drawing.Point(96, 137);
+            this.checkBoxAutoUpload.Name = "checkBoxAutoUpload";
+            this.checkBoxAutoUpload.Size = new System.Drawing.Size(108, 16);
+            this.checkBoxAutoUpload.TabIndex = 47;
+            this.checkBoxAutoUpload.Text = "自动(测试上传)";
+            this.checkBoxAutoUpload.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1137,6 +1149,7 @@
         private System.Windows.Forms.TextBox textBoxCurrentOpenTime;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.CheckBox checkBoxAutoTest;
+        private System.Windows.Forms.CheckBox checkBoxAutoUpload;
     }
 }
 

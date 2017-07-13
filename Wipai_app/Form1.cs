@@ -457,6 +457,21 @@ namespace Wipai_app
                         }
                     }
 
+                    //自动上传
+                    if (checkBoxAutoUpload.Checked)
+                    {
+                        if (checkIsAllCmdStage3())
+                        {
+                            foreach (DictionaryEntry de in htClient)
+                            {
+                                DataItem dataitem1 = (DataItem)de.Value;
+                                if (dataitem1.CmdStage == 3)//add 5-13
+                                    dataitem.CmdStage = 0;
+                            }
+                            UploadADdataByGroup(currentUploadGroup);
+                        }
+                    }
+
                 }
                 else if (bytesRead == 0)//设备自己关闭socket
                 {
