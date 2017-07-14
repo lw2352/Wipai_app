@@ -69,6 +69,7 @@
             this.BtnSendCmd = new System.Windows.Forms.Button();
             this.BtnGetData = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBoxAutoUpload = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoTest = new System.Windows.Forms.CheckBox();
             this.btn_GetTimeStamp = new System.Windows.Forms.Button();
             this.btn_GetDistance = new System.Windows.Forms.Button();
@@ -94,6 +95,7 @@
             this.PortextBox = new System.Windows.Forms.TextBox();
             this.BtnSetIPname = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Btn_CloseSocket = new System.Windows.Forms.Button();
             this.buttonSetCurrentOpenCloseTime = new System.Windows.Forms.Button();
             this.textBoxCurrentCloseTime = new System.Windows.Forms.TextBox();
             this.textBoxCurrentOpenTime = new System.Windows.Forms.TextBox();
@@ -116,7 +118,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.IPtextBox3 = new System.Windows.Forms.TextBox();
             this.IPtextBox2 = new System.Windows.Forms.TextBox();
-            this.checkBoxAutoUpload = new System.Windows.Forms.CheckBox();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -541,6 +542,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "功能操作";
             // 
+            // checkBoxAutoUpload
+            // 
+            this.checkBoxAutoUpload.AutoSize = true;
+            this.checkBoxAutoUpload.Location = new System.Drawing.Point(96, 137);
+            this.checkBoxAutoUpload.Name = "checkBoxAutoUpload";
+            this.checkBoxAutoUpload.Size = new System.Drawing.Size(108, 16);
+            this.checkBoxAutoUpload.TabIndex = 47;
+            this.checkBoxAutoUpload.Text = "自动(测试上传)";
+            this.checkBoxAutoUpload.UseVisualStyleBackColor = true;
+            // 
             // checkBoxAutoTest
             // 
             this.checkBoxAutoTest.AutoSize = true;
@@ -765,6 +776,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.Btn_CloseSocket);
             this.groupBox3.Controls.Add(this.buttonSetCurrentOpenCloseTime);
             this.groupBox3.Controls.Add(this.textBoxCurrentCloseTime);
             this.groupBox3.Controls.Add(this.textBoxCurrentOpenTime);
@@ -814,6 +826,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "采样设置";
             // 
+            // Btn_CloseSocket
+            // 
+            this.Btn_CloseSocket.Location = new System.Drawing.Point(416, 98);
+            this.Btn_CloseSocket.Name = "Btn_CloseSocket";
+            this.Btn_CloseSocket.Size = new System.Drawing.Size(69, 31);
+            this.Btn_CloseSocket.TabIndex = 53;
+            this.Btn_CloseSocket.Text = "断开连接";
+            this.Btn_CloseSocket.UseVisualStyleBackColor = true;
+            this.Btn_CloseSocket.Click += new System.EventHandler(this.Btn_CloseSocket_Click);
+            // 
             // buttonSetCurrentOpenCloseTime
             // 
             this.buttonSetCurrentOpenCloseTime.Location = new System.Drawing.Point(443, 57);
@@ -850,9 +872,9 @@
             // 
             // Btn_reconnectTcp
             // 
-            this.Btn_reconnectTcp.Location = new System.Drawing.Point(416, 115);
+            this.Btn_reconnectTcp.Location = new System.Drawing.Point(416, 135);
             this.Btn_reconnectTcp.Name = "Btn_reconnectTcp";
-            this.Btn_reconnectTcp.Size = new System.Drawing.Size(69, 51);
+            this.Btn_reconnectTcp.Size = new System.Drawing.Size(69, 31);
             this.Btn_reconnectTcp.TabIndex = 48;
             this.Btn_reconnectTcp.Text = "重新联网";
             this.Btn_reconnectTcp.UseVisualStyleBackColor = true;
@@ -1018,16 +1040,6 @@
             this.IPtextBox2.Size = new System.Drawing.Size(36, 21);
             this.IPtextBox2.TabIndex = 22;
             // 
-            // checkBoxAutoUpload
-            // 
-            this.checkBoxAutoUpload.AutoSize = true;
-            this.checkBoxAutoUpload.Location = new System.Drawing.Point(96, 137);
-            this.checkBoxAutoUpload.Name = "checkBoxAutoUpload";
-            this.checkBoxAutoUpload.Size = new System.Drawing.Size(108, 16);
-            this.checkBoxAutoUpload.TabIndex = 47;
-            this.checkBoxAutoUpload.Text = "自动(测试上传)";
-            this.checkBoxAutoUpload.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1150,6 +1162,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.CheckBox checkBoxAutoTest;
         private System.Windows.Forms.CheckBox checkBoxAutoUpload;
+        private System.Windows.Forms.Button Btn_CloseSocket;
     }
 }
 

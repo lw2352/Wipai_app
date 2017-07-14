@@ -404,5 +404,25 @@ namespace Wipai_app
             SendCmdAll(CmdSetCurrentOpenAndCloseTime);
         }
 
+        private void Btn_CloseSocket_Click(object sender, EventArgs e)
+        {
+            try
+            {//此处进行遍历操作
+                foreach (DictionaryEntry de in htClient)
+                {
+                    DataItem dataitem = (DataItem)de.Value;
+                    if (dataitem.isChoosed == true)
+                    {
+                        dataitem.socket.Shutdown(SocketShutdown.Both);
+                        dataitem.socket.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
     }
 }

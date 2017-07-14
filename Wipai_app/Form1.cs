@@ -547,11 +547,12 @@ namespace Wipai_app
             {
                 cmd[9] = (byte)DateTime.Now.Hour;
                 cmd[10] = (byte)(DateTime.Now.Minute + minute);//当前时刻加5分钟
+
             }
             else
-            { //分钟数大于60
+            { //分钟数大于等于60
                 cmd[9] = (byte)(DateTime.Now.Hour + 1);
-                cmd[10] = (byte)(DateTime.Now.Minute + minute - 60);
+                cmd[10] = (byte)(DateTime.Now.Minute + minute - 60 +1);//避免分钟数为0
             }
             try
             {//此处进行遍历操作
@@ -586,7 +587,7 @@ namespace Wipai_app
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "SGSserverTCP", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                CloseSocket((Socket)ar.AsyncState);
+                //CloseSocket((Socket)ar.AsyncState);
             }
         }
 
