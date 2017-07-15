@@ -333,7 +333,7 @@ namespace Wipai_app
 
                                     ShowProgressBar(null);
 
-                                    for (int i = 7; i < perPackageLength - 2; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
+                                    for (int i = 7; i < 1007; i++)//将上传的包去掉头和尾的两个字节后，暂时存储在TotalData[]中
                                     {
                                         dataitem.byteAllData[dataitem.datalength++] = dataitem.SingleBuffer[i];
                                     }
