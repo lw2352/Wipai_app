@@ -325,7 +325,7 @@ namespace Wipai_app
                             break;
 
                         case 0x23:
-                            if (bytesRead == perPackageLength)
+                            if (bytesRead >= 1007)
                             {
                                 if (dataitem.isSendDataToServer == true)
                                 {
