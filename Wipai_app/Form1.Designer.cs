@@ -486,12 +486,12 @@
             // 
             // CmdBox
             // 
-            this.CmdBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CmdBox.FormattingEnabled = true;
             this.CmdBox.Location = new System.Drawing.Point(109, 57);
             this.CmdBox.Name = "CmdBox";
             this.CmdBox.Size = new System.Drawing.Size(190, 20);
             this.CmdBox.TabIndex = 6;
+            this.CmdBox.Text = "查询命令";
             // 
             // IDBox
             // 
