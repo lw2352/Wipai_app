@@ -83,11 +83,7 @@
             this.BtnSetCaptime = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.MinuteBox = new System.Windows.Forms.TextBox();
-            this.SecondBox = new System.Windows.Forms.TextBox();
-            this.MsBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.BtnSetAPpassword = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -643,13 +639,13 @@
             // 
             this.HourBox.Location = new System.Drawing.Point(90, 35);
             this.HourBox.Name = "HourBox";
-            this.HourBox.Size = new System.Drawing.Size(37, 21);
+            this.HourBox.Size = new System.Drawing.Size(91, 21);
             this.HourBox.TabIndex = 5;
             // 
             // BtnSetCaptime
             // 
             this.BtnSetCaptime.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.BtnSetCaptime.Location = new System.Drawing.Point(314, 33);
+            this.BtnSetCaptime.Location = new System.Drawing.Point(282, 34);
             this.BtnSetCaptime.Name = "BtnSetCaptime";
             this.BtnSetCaptime.Size = new System.Drawing.Size(52, 23);
             this.BtnSetCaptime.TabIndex = 8;
@@ -663,60 +659,26 @@
             this.label8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label8.Location = new System.Drawing.Point(88, 17);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.Size = new System.Drawing.Size(101, 12);
             this.label8.TabIndex = 9;
-            this.label8.Text = "小时";
+            this.label8.Text = "小时(用逗号隔开)";
             // 
             // MinuteBox
             // 
-            this.MinuteBox.Location = new System.Drawing.Point(151, 35);
+            this.MinuteBox.Location = new System.Drawing.Point(187, 35);
             this.MinuteBox.Name = "MinuteBox";
-            this.MinuteBox.Size = new System.Drawing.Size(37, 21);
+            this.MinuteBox.Size = new System.Drawing.Size(89, 21);
             this.MinuteBox.TabIndex = 10;
-            // 
-            // SecondBox
-            // 
-            this.SecondBox.Location = new System.Drawing.Point(206, 36);
-            this.SecondBox.Name = "SecondBox";
-            this.SecondBox.Size = new System.Drawing.Size(37, 21);
-            this.SecondBox.TabIndex = 11;
-            // 
-            // MsBox
-            // 
-            this.MsBox.Location = new System.Drawing.Point(261, 35);
-            this.MsBox.Name = "MsBox";
-            this.MsBox.Size = new System.Drawing.Size(37, 21);
-            this.MsBox.TabIndex = 12;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label9.Location = new System.Drawing.Point(149, 17);
+            this.label9.Location = new System.Drawing.Point(195, 17);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 12);
+            this.label9.Size = new System.Drawing.Size(101, 12);
             this.label9.TabIndex = 13;
-            this.label9.Text = "分钟";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label10.Location = new System.Drawing.Point(213, 17);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(17, 12);
-            this.label10.TabIndex = 14;
-            this.label10.Text = "秒";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label11.Location = new System.Drawing.Point(259, 17);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(29, 12);
-            this.label11.TabIndex = 15;
-            this.label11.Text = "毫秒";
+            this.label9.Text = "分钟(用逗号隔开)";
             // 
             // BtnSetAPpassword
             // 
@@ -805,11 +767,7 @@
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.BtnSetAPpassword);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.MsBox);
-            this.groupBox3.Controls.Add(this.SecondBox);
             this.groupBox3.Controls.Add(this.MinuteBox);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.BtnSetCaptime);
@@ -1106,11 +1064,7 @@
         private System.Windows.Forms.Button BtnSetCaptime;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox MinuteBox;
-        private System.Windows.Forms.TextBox SecondBox;
-        private System.Windows.Forms.TextBox MsBox;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button BtnSetAPpassword;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;

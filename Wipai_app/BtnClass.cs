@@ -162,10 +162,20 @@ namespace Wipai_app
         private void BtnSetCaptime_Click(object sender, EventArgs e)
         {
             byte[] Cmd = cmdItem.CmdSetCapTime;
-            Cmd[9] = Convert.ToByte(HourBox.Text);
-            Cmd[10] = Convert.ToByte(MinuteBox.Text);
-            Cmd[11] = Convert.ToByte(SecondBox.Text);
-            Cmd[12] = Convert.ToByte(MsBox.Text);
+            string strHour = HourBox.Text;
+            string strMinute = MinuteBox.Text;
+            //最多24组
+            string[] HourArray = strHour.Split(new char[] { ',' });
+            string[] MinuteArray = strMinute.Split(new char[] { ',' });
+
+            for (int i = 0, j=9; i < 24; i++)
+            {
+                if (i < HourArray.GetLength(0))
+                {
+                    Cmd[j++] = Convert.ToByte(HourArray[i]);
+                    Cmd[j++] = Convert.ToByte(MinuteArray[i]);
+                }
+            }
             SendCmdAll(Cmd);
         }
         //设置AP名(ssid)
@@ -219,7 +229,7 @@ namespace Wipai_app
         //让设备立即采样
         private void BtnGetData_Click(object sender, EventArgs e)
         {
-            byte[] cmd = new byte[] { 0xA5, 0xA5, 0x25, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x04, 0x0A, 0x1E, 0x00, 0x00, 0xFF, 0x5A, 0x5A };
+            byte[] cmd = cmdItem.CmdSetCapTimeTemporary;
 
             if (DateTime.Now.Minute + 5 <= 59)
             {
