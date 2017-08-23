@@ -168,12 +168,23 @@ namespace Wipai_app
             string[] HourArray = strHour.Split(new char[] { ',' });
             string[] MinuteArray = strMinute.Split(new char[] { ',' });
 
+            List<int> timesList = new List<int>(24);
+
+            for (int i = 0; i < HourArray.GetLength(0); i++)
+            {
+                timesList.Add(Convert.ToInt32(HourArray[i]) * 60 + Convert.ToInt32(MinuteArray[i]));
+            }
+
+            timesList.Sort();//TODO:默认从小到大排序,排序完了之后分解并存放在数组中
+
             for (int i = 0, j=9; i < 24; i++)
             {
                 if (i < HourArray.GetLength(0))
                 {
-                    Cmd[j++] = Convert.ToByte(HourArray[i]);
-                    Cmd[j++] = Convert.ToByte(MinuteArray[i]);
+                    int hour = timesList[i] / 60;
+                    int minute = timesList[i] - 60 * hour;
+                    Cmd[j++] = Convert.ToByte(hour);
+                    Cmd[j++] = Convert.ToByte(minute);
                 }
             }
             SendCmdAll(Cmd);

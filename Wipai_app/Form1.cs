@@ -453,7 +453,7 @@ namespace Wipai_app
                                     dataitem.CmdStage = 0;
                             }
                             ShowMsg("所有设备数据传完,CmdStage置0；设置当前组的采样时间\n");
-                            SetCapTimeByGroup(5, currentUploadGroup);
+                            SetCapTimeByGroup(3, currentUploadGroup);
                         }
                     }
 
@@ -542,7 +542,7 @@ namespace Wipai_app
         //向一组设备设置采样时间
         private void SetCapTimeByGroup(int minute, int group)
         {
-            byte[] cmd = cmdItem.CmdSetCapTime;
+            byte[] cmd = cmdItem.CmdSetCapTimeTemporary;
             if (DateTime.Now.Minute + minute <= 59)
             {
                 cmd[9] = (byte)DateTime.Now.Hour;
